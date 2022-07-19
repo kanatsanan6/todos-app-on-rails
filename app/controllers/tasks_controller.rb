@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 class TasksController < ApplicationController
+  before_action :set_task, only: %i[show edit update]
+
   def index
     @tasks = Task.all.sort_by(&:id)
   end
 
   def show
-    @task = Task.find(params[:id])
+    set_task
   end
 
   def new
@@ -24,11 +26,11 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = Task.find(params[:id])
+    set_task
   end
 
   def update
-    @task = Task.find(params[:id])
+    set_task
 
     if @task.update(task_params)
       redirect_to root_url
@@ -38,13 +40,17 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task = Task.find(params[:id])
+    set_task
     @task.destroy
 
     redirect_to root_url, status: :see_other
   end
 
   private
+
+  def set_task
+    @task = Task.find(params[:id])
+  end
 
   def task_params
     # convert status attrbute from check_box input to boolean
