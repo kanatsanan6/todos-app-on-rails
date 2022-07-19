@@ -17,7 +17,7 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
 
     if @task.save
-      redirect_to @task
+      redirect_to root_url
     else
       render :new, status: :unprocessable_entity
     end
@@ -47,6 +47,6 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:title, :body, :status)
+    params.require(:task).permit(:title, :body)
   end
 end
