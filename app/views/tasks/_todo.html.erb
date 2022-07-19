@@ -1,7 +1,7 @@
 <div class='w-[100%] border border-black rounded-lg p-4 m-1 flex justify-between items-center'>
   <div class='flex items-center'>
     <%= task.status ? '<input type="checkbox" disabled checked/>'.html_safe : '<input type="checkbox" disabled/>'.html_safe %>
-    <%= task.status ? "<p class='ml-2'>#{task.title}</p>".html_safe : "<p class='ml-2 line-through text-gray-400'>#{task.title}</p>".html_safe %>
+    <%= task.status ? "<p class='line-through text-gray-400 ml-2'>#{task.title}</p>".html_safe : "<p class='ml-2'>#{task.title}</p>".html_safe %>
   </div>
   <div class="flex items-center">
     <p class='text-xs cursor-pointer hover:underline'><%= link_to 'See details', task_path(task) %></p>
