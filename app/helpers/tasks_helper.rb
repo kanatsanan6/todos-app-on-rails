@@ -2,10 +2,8 @@
 
 module TasksHelper
   def progress(tasks)
-    completed_task = 0
-    tasks.each do |task|
-      completed_task += 1 if task.status
-    end
-    completed_task * 100 / (tasks.length.nonzero? || 1)
+    completed_task = tasks.count(&:status)
+    all_task = tasks.length
+    completed_task * 100 / (all_task.nonzero? || 1)
   end
 end
