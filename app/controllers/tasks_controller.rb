@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[show edit update]
+  before_action :set_task, only: %i[show edit update destroy]
 
   def index
     @tasks = Task.all.sort_by(&:id)
   end
 
-  def show
-    set_task
-  end
+  def show; end
 
   def new
     @task = Task.new
@@ -25,13 +23,9 @@ class TasksController < ApplicationController
     end
   end
 
-  def edit
-    set_task
-  end
+  def edit; end
 
   def update
-    set_task
-
     if @task.update(task_params)
       redirect_to root_url
     else
@@ -40,7 +34,6 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    set_task
     @task.destroy
 
     redirect_to root_url, status: :see_other
