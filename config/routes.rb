@@ -4,6 +4,6 @@ Rails.application.routes.draw do
   root 'tasks#index'
 
   resources :tasks do
-    resources :comments, only: [:create, :edit, :update, :destroy]
+    resources :comments, only: %i[create edit update destroy]
   end
 end
