@@ -8,6 +8,6 @@
     <p class='mx-1 text-xs'>|</p>
     <p class='text-xs cursor-pointer hover:underline'><%= link_to 'EDIT', edit_task_path(task) %></p>
     <p class='mx-1 text-xs'>|</p>
-    <p class='text-xs cursor-pointer hover:underline'><%= link_to 'DELETE', task_path(task), method: :delete %></p>
+    <p class='text-xs cursor-pointer hover:underline'><%= link_to 'DELETE', task_path(task), method: :delete, data: { confirm: "Are you sure?" } %></p>
   </div>
 </div>

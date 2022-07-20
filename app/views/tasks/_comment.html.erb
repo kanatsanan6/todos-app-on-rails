@@ -4,7 +4,7 @@
     <div class='flex items-center'>
       <p class='text-xs cursor-pointer hover:underline'><%= link_to 'EDIT', edit_task_comment_path(task, comment) %></p>
       <p class='mx-1 text-xs'>|</p>
-      <p class='text-xs cursor-pointer hover:underline'><%= link_to 'DELETE', task_comment_path(task, comment), method: :delete %></p>
+      <p class='text-xs cursor-pointer hover:underline'><%= link_to 'DELETE', task_comment_path(task, comment), method: :delete, data: { confirm: "Are you sure?" } %></p>
     </div>
   </div>
   <div class='flex items-baseline mb-2'>
