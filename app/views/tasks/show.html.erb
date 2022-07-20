@@ -12,11 +12,24 @@
     </div>
     <h5 class='text-md mt-2'><%= "Description: #{@task.body}" %></h5>
     <h5 class='text-md mt-2'><%= "Status: #{@task.status ? 'Completed' : 'In Progress'}" %></h5>
-
     <hr class='mt-4 mb-2 border-black'/>
     <h4 class='text-xl mb-2'>Comments</h4>
     <% @task.comments.each do |comment| %>
       <%= render 'comment',  task: @task , comment: comment %>
+    <% end %>
+    <h2>Add a comment:</h2>
+    <%= form_with model: [ @task, @task.comments.build ] do |form| %>
+      <p class='text-sm'>
+        <%= form.label :commenter %><br>
+        <%= form.text_field :commenter %>
+      </p>
+      <p class='text-sm'>
+        <%= form.label :body %><br>
+        <%= form.text_area :body %>
+      </p>
+      <div class='border border-black px-2 py-1 w-fit rounded-md mt-4 text-center'>
+        <%= form.submit %>
+      </div>
     <% end %>
   </div>
 </div>
