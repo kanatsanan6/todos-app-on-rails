@@ -1,0 +1,15 @@
+<div class='mb-3'>
+  <div class='flex items-center justify-between'>
+    <p class='text-xs'><%= comment.updated_at.strftime("%m-%b-%y at %I:%M%p") %></p>
+    <div class='flex items-center'>
+      <p class='text-xs cursor-pointer hover:underline'><%= link_to 'EDIT', edit_task_comment_path(task, comment) %></p>
+      <p class='mx-1 text-xs'>|</p>
+      <p class='text-xs cursor-pointer hover:underline'><%= link_to 'DELETE', task_comment_path(task, comment), method: :delete %></p>
+    </div>
+  </div>
+  <div class='flex items-baseline mb-2'>
+    <h5 class='text-semibold text-sm'><%= "#{comment.commenter}:" %></h5>
+    <h5 class='ml-2 text-sm'><%= comment.body %></h5>
+  </div>
+  <hr />
+</div>
