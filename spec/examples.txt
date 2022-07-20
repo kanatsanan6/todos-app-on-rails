@@ -1,12 +1,38 @@
-example_id                           | status | run_time        |
------------------------------------- | ------ | --------------- |
-./spec/models/comment_spec.rb[1:1:1] | passed | 0.16176 seconds |
-./spec/models/comment_spec.rb[1:1:2] | passed | 0.02212 seconds |
-./spec/models/comment_spec.rb[1:2:1] | passed | 0.01832 seconds |
-./spec/models/comment_spec.rb[1:2:2] | passed | 0.01409 seconds |
-./spec/models/task_spec.rb[1:1:1]    | passed | 0.00372 seconds |
-./spec/models/task_spec.rb[1:1:2]    | passed | 0.00406 seconds |
-./spec/models/task_spec.rb[1:2:1]    | passed | 0.02464 seconds |
-./spec/models/task_spec.rb[1:2:2]    | passed | 0.01648 seconds |
-./spec/models/task_spec.rb[1:2:3]    | passed | 0.00644 seconds |
-./spec/models/task_spec.rb[1:2:4]    | passed | 0.00267 seconds |
+example_id                                           | status | run_time        |
+---------------------------------------------------- | ------ | --------------- |
+./spec/controllers/tasks_controller_spec.rb[1:1:1]   | passed | 0.01537 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:1:2]   | passed | 0.06892 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:1:3]   | passed | 0.01587 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:2:1]   | passed | 0.0321 seconds  |
+./spec/controllers/tasks_controller_spec.rb[1:2:2]   | passed | 0.01592 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:2:3]   | passed | 0.01797 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:3:1]   | passed | 0.01351 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:3:2]   | passed | 0.0322 seconds  |
+./spec/controllers/tasks_controller_spec.rb[1:3:3]   | passed | 0.0681 seconds  |
+./spec/controllers/tasks_controller_spec.rb[1:4:1:1] | passed | 0.01684 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:4:1:2] | passed | 0.0249 seconds  |
+./spec/controllers/tasks_controller_spec.rb[1:4:1:3] | passed | 0.01457 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:4:2:1] | passed | 0.01537 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:4:2:2] | passed | 0.01576 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:5:1:1] | passed | 0.01472 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:5:1:2] | passed | 0.01599 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:5:1:3] | passed | 0.03141 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:5:2:1] | passed | 0.34803 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:6:1:1] | passed | 0.01688 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:6:1:2] | passed | 0.01766 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:6:1:3] | passed | 0.01606 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:6:2:1] | passed | 0.01691 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:6:2:2] | passed | 0.01752 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:7:1]   | passed | 0.01683 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:7:2]   | passed | 0.04504 seconds |
+./spec/controllers/tasks_controller_spec.rb[1:7:3]   | passed | 0.02043 seconds |
+./spec/models/comment_spec.rb[1:1:1]                 | passed | 0.0024 seconds  |
+./spec/models/comment_spec.rb[1:1:2]                 | passed | 0.01864 seconds |
+./spec/models/comment_spec.rb[1:2:1]                 | passed | 0.00965 seconds |
+./spec/models/comment_spec.rb[1:2:2]                 | passed | 0.00796 seconds |
+./spec/models/task_spec.rb[1:1:1]                    | passed | 0.0039 seconds  |
+./spec/models/task_spec.rb[1:1:2]                    | passed | 0.00619 seconds |
+./spec/models/task_spec.rb[1:2:1]                    | passed | 0.01284 seconds |
+./spec/models/task_spec.rb[1:2:2]                    | passed | 0.0137 seconds  |
+./spec/models/task_spec.rb[1:2:3]                    | passed | 0.00494 seconds |
+./spec/models/task_spec.rb[1:2:4]                    | passed | 0.14244 seconds |
