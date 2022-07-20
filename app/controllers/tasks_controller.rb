@@ -46,8 +46,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    # convert status attrbute from check_box input to boolean
-    params[:task][:status] = ActiveRecord::Type::Boolean.new.deserialize(params[:task][:status])
     params.require(:task).permit(:title, :body, :status)
   end
 end
