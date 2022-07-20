@@ -1,0 +1,19 @@
+<%= form_with model: [task, comment] do |form| %>
+  <div>
+    <%= form.label :commenter %><br>
+    <%= form.text_field :commenter %>
+    <% comment.errors.full_messages_for(:commenter).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+  <div class='mt-3'>
+    <%= form.label :body %><br>
+    <%= form.text_area :body %><br>
+    <% comment.errors.full_messages_for(:body).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+  <div class='border border-black px-2 py-1 rounded-md mt-4 text-center'>
+    <%= form.submit %>
+  </div>
+<% end %>
