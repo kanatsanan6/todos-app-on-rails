@@ -1,0 +1,12 @@
+example_id                           | status | run_time        |
+------------------------------------ | ------ | --------------- |
+./spec/models/comment_spec.rb[1:1:1] | passed | 0.16176 seconds |
+./spec/models/comment_spec.rb[1:1:2] | passed | 0.02212 seconds |
+./spec/models/comment_spec.rb[1:2:1] | passed | 0.01832 seconds |
+./spec/models/comment_spec.rb[1:2:2] | passed | 0.01409 seconds |
+./spec/models/task_spec.rb[1:1:1]    | passed | 0.00372 seconds |
+./spec/models/task_spec.rb[1:1:2]    | passed | 0.00406 seconds |
+./spec/models/task_spec.rb[1:2:1]    | passed | 0.02464 seconds |
+./spec/models/task_spec.rb[1:2:2]    | passed | 0.01648 seconds |
+./spec/models/task_spec.rb[1:2:3]    | passed | 0.00644 seconds |
+./spec/models/task_spec.rb[1:2:4]    | passed | 0.00267 seconds |
