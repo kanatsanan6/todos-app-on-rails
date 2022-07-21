@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'support/database_cleaner'
 require 'support/factory_bot'
 
 RSpec.configure do |config|
