@@ -27,7 +27,14 @@ RSpec.describe TasksController, type: :controller do
 
     it 'returns task1' do
       subject
+
       expect(assigns(:task)).to eq task1
+    end
+
+    it 'raises an error' do
+      params[:id] = 'invalid_id'
+
+      expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
@@ -39,83 +46,78 @@ RSpec.describe TasksController, type: :controller do
 
     it 'creates new instance' do
       subject
+
       expect(assigns(:task).title).to eq ''
       expect(assigns(:task).body).to eq ''
-      expect(assigns(:task).status).to eq 'in_progress'
+      expect(assigns(:task).status).to eq 'pending'
     end
   end
 
   describe 'POST #create' do
-    context 'creates a new task successfully' do
-      let(:params) { { task: { title: 'Title-1', body: 'This is a body' } } }
-      subject { post :create, params: params }
+    let(:params) { { task: { title: 'Title-1', body: 'This is a body' } } }
+    subject { post :create, params: params }
 
-      it { is_expected.to have_http_status(302) }
-      it { is_expected.to redirect_to root_url }
+    it { is_expected.to have_http_status(302) }
+    it { is_expected.to redirect_to root_url }
 
-      it 'creates a new task' do
-        subject
-        expect(assigns(:task).title).to eq 'Title-1'
-        expect(assigns(:task).body).to eq 'This is a body'
-        expect(assigns(:task).status).to eq 'in_progress'
-      end
+    it 'creates a new task' do
+      subject
+
+      expect(assigns(:task).title).to eq 'Title-1'
+      expect(assigns(:task).body).to eq 'This is a body'
+      expect(assigns(:task).status).to eq 'pending'
     end
 
-    context 'connot create a new task' do
-      let(:params) { { task: { title: '', body: '' } } }
-      subject { post :create, params: params }
+    it 'cannot create a new task' do
+      params[:task][:body] = ''
+      subject
 
-      it { is_expected.to have_http_status(:unprocessable_entity) }
-      it { is_expected.to render_template('new') }
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to render_template('new')
     end
   end
 
   describe 'GET #edit' do
-    context 'found the task which needs to update' do
-      let(:params) { { id: task1.id } }
-      subject { get :edit, params: params }
+    let(:params) { { id: task1.id } }
+    subject { get :edit, params: params }
 
-      it { is_expected.to have_http_status(:ok) }
-      it { is_expected.to render_template('edit') }
+    it { is_expected.to have_http_status(:ok) }
+    it { is_expected.to render_template('edit') }
 
-      it 'returns the task' do
-        subject
-        expect(assigns(:task)).to eq task1
-      end
+    it 'returns the task' do
+      subject
+
+      expect(assigns(:task)).to eq task1
     end
 
-    context 'connot find the task which needs to update' do
-      let(:params) { { id: 999_999 } }
-      subject { get :edit, params: params }
+    it 'returns an error' do
+      params[:id] = 'invalid_id'
 
-      it 'returns an error' do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
-      end
+      expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
   describe 'PATCH #update' do
-    context 'update the task successfully' do
-      let(:params) { { id: task2.id, task: { title: 'updated Title', body: 'This is updated body', status: 'in_progress' } } }
-      subject { post :update, params: params }
+    let(:params) { { id: task2.id, task: { title: 'updated Title', body: 'This is updated body', status: 'in_progress' } } }
+    subject { post :update, params: params }
 
-      it { is_expected.to have_http_status(302) }
-      it { is_expected.to redirect_to root_url }
+    it { is_expected.to have_http_status(302) }
+    it { is_expected.to redirect_to task_path(assigns(:task)) }
 
-      it 'updates the task' do
-        subject
-        expect(assigns(:task).title).to eq 'updated Title'
-        expect(assigns(:task).body).to eq 'This is updated body'
-        expect(assigns(:task).status).to eq 'in_progress'
-      end
+    it 'updates the task' do
+      subject
+
+      expect(assigns(:task).title).to eq 'updated Title'
+      expect(assigns(:task).body).to eq 'This is updated body'
+      expect(assigns(:task).status).to eq 'in_progress'
     end
 
-    context 'connot update the task' do
-      let(:params) { { id: task2.id, task: { title: 'updated Title', body: '' } } }
-      subject { post :update, params: params }
+    it 'connot update the task' do
+      params[:task][:body] = ''
+      subject
 
-      it { is_expected.to have_http_status(:unprocessable_entity) }
-      it { is_expected.to render_template('edit') }
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to render_template('edit')
     end
   end
 
