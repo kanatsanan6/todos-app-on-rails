@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-source 'https://rubygems.org'
+source 'https://www.rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.6'
@@ -69,7 +69,9 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'database_cleaner-active_record', '~> 2.0', '>= 2.0.1'
   gem 'factory_bot_rails', '~> 6.2'
+  gem 'pry-byebug', '~> 3.9'
   gem 'rails-controller-testing', '~> 1.0', '>= 1.0.5'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 5.0'
