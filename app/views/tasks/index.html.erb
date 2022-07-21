@@ -1,2 +1,12 @@
-<h1>Tasks#index</h1>
-<p>Find me in app/views/tasks/index.html.erb</p>
+<div class='w-[100%] h-[100%] m-auto flex flex-col items-center'>
+  <h1 class='text-center font-semibold text-2xl m-10'>TODOS LIST</h1>
+  <div class='w-[60%] flex flex-col items-center'>
+    <div class='flex justify-between items-center w-[100%] mb-3'>
+      <p><%= "Completed: #{progress(@tasks)}%" %></p>
+      <%= link_to "Add new Task", new_task_path, { class: 'text-sm border border-black p-2 rounded-lg hover:bg-gray-100' } %>
+    </div>
+    <% @tasks.each do |task| %>
+      <%= render 'todo', task: task %>
+    <% end %>
+  </div>
+</div>
