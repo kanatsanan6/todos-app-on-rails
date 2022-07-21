@@ -2,9 +2,7 @@
 
 module TasksHelper
   def progress(tasks)
-    completed_task = tasks.count { |task| task.status == 'done' }
-    all_task = tasks.length
-    completed_percent = completed_task * 100 / (all_task.nonzero? || 1)
+    completed_percent = progress_calculator(tasks)
 
     "<p>Completed: #{completed_percent}%</p>".html_safe
   end
@@ -40,7 +38,16 @@ module TasksHelper
            else
              'Pending'
            end
-           
+
     out.html_safe
+  end
+
+  private
+
+  def progress_calculator(tasks)
+    completed_task = tasks.count(&:done?)
+    all_task = tasks.length
+
+    completed_task * 100 / (all_task.nonzero? || 1)
   end
 end
