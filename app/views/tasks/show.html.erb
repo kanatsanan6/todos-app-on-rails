@@ -11,7 +11,7 @@
       </div>
     </div>
     <h5 class='text-md mt-2'><%= "Description: #{@task.body}" %></h5>
-    <h5 class='text-md mt-2'><%= "Status: #{@task.status ? 'Completed' : 'In Progress'}" %></h5>
+    <h5 class='text-md mt-2'><%= task_status(@task) %></h5>
     <hr class='mt-4 mb-2 border-black'/>
     <h4 class='text-xl mb-2'>Comments</h4>
     <% @task.comments.each do |comment| %>

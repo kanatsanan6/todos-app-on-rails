@@ -9,7 +9,7 @@ class CommentsController < ApplicationController
     @comment = @task.comments.create!(comment_params)
     redirect_to task_path(@task)
   rescue StandardError
-    render :new, status: :unprocessable_entity
+    redirect_to task_path(@task), status: :unprocessable_entity
   end
 
   def edit; end
@@ -18,7 +18,7 @@ class CommentsController < ApplicationController
     if @comment.update(comment_params)
       redirect_to task_path(@task)
     else
-      render :new, status: :unprocessable_entity
+      redirect_to task_path(@task), status: :unprocessable_entity
     end
   end
 
