@@ -8,8 +8,8 @@ class CommentsController < ApplicationController
   def create
     @comment = @task.comments.create!(comment_params)
     redirect_to task_path(@task)
-  rescue StandardError
-    redirect_to task_path(@task), status: :unprocessable_entity
+  rescue ActiveRecord::RecordInvalid
+    redirect_to task_path(@task)
   end
 
   def edit; end
@@ -18,14 +18,14 @@ class CommentsController < ApplicationController
     if @comment.update(comment_params)
       redirect_to task_path(@task)
     else
-      redirect_to task_path(@task), status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @comment.destroy
 
-    redirect_to task_path(@task)
+    redirect_to task_path(@task), status: :see_other
   end
 
   private
