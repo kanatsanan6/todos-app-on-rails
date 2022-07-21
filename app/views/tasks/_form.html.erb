@@ -14,10 +14,8 @@
     <% end %>
   </div>
   <div class='mt-2' >
-    <div class='flex items-center'>
-      <%= form.check_box :status, {}, 'done', 'in_progress' %>
-      <p class='ml-2'>Mask as Done</p>
-    </div>
+    <p>Status</p>
+    <%= form.select :status, options_for_select([['Pending', 'pending'], ['In progress', 'in_progress'], ['Done', 'done']]) %>
   </div>
   <div class='border border-black px-2 py-1 rounded-md mt-4 text-center'>
     <%= form.submit %>
