@@ -5,6 +5,7 @@ module TasksHelper
     completed_task = tasks.count { |task| task.status == 'done' }
     all_task = tasks.length
     completed_percent = completed_task * 100 / (all_task.nonzero? || 1)
+
     "<p>Completed: #{completed_percent}%</p>".html_safe
   end
 
@@ -16,6 +17,7 @@ module TasksHelper
           else
             '<input type="checkbox" disabled/>'
           end
+
     out.html_safe
   end
 
@@ -25,6 +27,7 @@ module TasksHelper
           else
             "<p class='ml-2'>#{task.title}</p>"
           end
+
     out.html_safe
   end
 
@@ -37,6 +40,7 @@ module TasksHelper
            else
              'Pending'
            end
+           
     out.html_safe
   end
 end
