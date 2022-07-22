@@ -3,8 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe TasksController, type: :controller do
-  let!(:task1) { create(:task) }
-  let!(:task2) { create(:task, status: :done) }
+  let!(:user1) { create(:user) }
+  let!(:user2) { create(:user) }
+  let!(:task1) { create(:task, user: user1) }
+  let!(:task2) { create(:task, user: user2, status: :done) }
+  before { sign_in user1 }
 
   describe 'GET #index' do
     subject { get :index }
@@ -14,6 +17,7 @@ RSpec.describe TasksController, type: :controller do
 
     it 'returns all tasks' do
       subject
+
       expect(assigns(:tasks)).to match_array [task1, task2]
     end
   end
@@ -55,7 +59,12 @@ RSpec.describe TasksController, type: :controller do
 
   describe 'POST #create' do
     let(:params) do
-      { task: { title: 'Title-1', body: 'This is a body' } }
+      {
+        task: {
+          title: 'Title-1',
+          body: 'This is a body'
+        }
+      }
     end
     subject { post :create, params: params }
 
@@ -93,16 +102,34 @@ RSpec.describe TasksController, type: :controller do
       expect(assigns(:task)).to eq task1
     end
 
-    it 'returns an error' do
-      params[:id] = 'invalid_id'
+    context 'invalid_id' do
+      it 'returns an error' do
+        params[:id] = 'invalid_id'
 
-      expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'not the task owner' do
+      it 'redirects to root url' do
+        sign_in user2
+        subject
+
+        expect(response).to redirect_to root_url
+      end
     end
   end
 
   describe 'PATCH #update' do
     let(:params) do
-      { id: task2.id, task: { title: 'updated Title', body: 'This is updated body', status: 'in_progress' } }
+      {
+        id: task1.id,
+        task: {
+          title: 'updated Title',
+          body: 'This is updated body',
+          status: 'in_progress'
+        }
+      }
     end
     subject { post :update, params: params }
 
@@ -117,12 +144,23 @@ RSpec.describe TasksController, type: :controller do
       expect(assigns(:task).status).to eq 'in_progress'
     end
 
-    it 'connot update the task' do
-      params[:task][:body] = ''
-      subject
+    context 'invalid_input' do
+      it 'connot update the task' do
+        params[:task][:body] = ''
+        subject
 
-      expect(response).to have_http_status(:unprocessable_entity)
-      expect(response).to render_template('edit')
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to render_template('edit')
+      end
+    end
+
+    context 'not the task owner' do
+      it 'redirects to root_url' do
+        sign_in user2
+        subject
+
+        expect(response).to redirect_to root_url
+      end
     end
   end
 
@@ -135,6 +173,14 @@ RSpec.describe TasksController, type: :controller do
 
     it 'deletes the task' do
       expect { subject }.to change(Task, :count).by(-1)
+    end
+
+    it 'deletes nothing and redirects to root_url' do
+      sign_in user2
+      subject
+
+      expect(response).to redirect_to root_url
+      expect(assigns(:task)).to be_valid
     end
   end
 end

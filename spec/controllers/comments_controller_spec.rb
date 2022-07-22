@@ -3,12 +3,20 @@
 require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
-  let!(:task) { create(:task) }
-  let!(:comment) { create(:comment, task: task) }
+  let!(:user1) { create(:user) }
+  let!(:user2) { create(:user) }
+  let!(:task) { create(:task, user: user1) }
+  let!(:comment) { create(:comment, task: task, user: user1) }
+  before { sign_in user1 }
 
   describe 'POST #create' do
     let(:params) do
-      { task_id: task.id, comment: { commenter: 'Test commenter', body: 'Test body' } }
+      {
+        task_id: task.id,
+        comment: {
+          body: 'Test body'
+        }
+      }
     end
     subject { post :create, params: params }
 
@@ -19,13 +27,13 @@ RSpec.describe CommentsController, type: :controller do
       subject
 
       expect(assigns(:task)).to eq task
-      expect(assigns(:comment).commenter).to eq 'Test commenter'
       expect(assigns(:comment).body).to eq 'Test body'
+      expect(assigns(:comment).user).to eq user1
       expect(Comment.count).to eq 2
     end
 
     it 'cannot create a new comment' do
-      params[:comment][:commenter] = ''
+      params[:comment][:body] = ''
       subject
 
       expect(response).to redirect_to task_path(assigns(:task))
@@ -46,16 +54,33 @@ RSpec.describe CommentsController, type: :controller do
       expect(assigns(:comment)).to eq comment
     end
 
-    it 'returns an error' do
-      params[:id] = 'invalid_id'
+    context 'invalid_id' do
+      it 'returns an error' do
+        params[:id] = 'invalid_id'
 
-      expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'not the comment owner' do
+      it 'redirects to task_path' do
+        sign_in user2
+        subject
+
+        expect(response).to redirect_to task_path(assigns(:task))
+      end
     end
   end
 
   describe 'PATCH #update' do
     let(:params) do
-      { task_id: task.id, id: comment.id, comment: { commenter: 'Updated commenter', body: 'Updated body' } }
+      {
+        task_id: task.id,
+        id: comment.id,
+        comment: {
+          body: 'Updated body'
+        }
+      }
     end
     subject { patch :update, params: params }
 
@@ -65,16 +90,26 @@ RSpec.describe CommentsController, type: :controller do
     it 'updates the comment successfully' do
       subject
 
-      expect(assigns(:comment).commenter).to eq 'Updated commenter'
       expect(assigns(:comment).body).to eq 'Updated body'
     end
 
-    it 'cannot update the comment' do
-      params[:comment][:commenter] = ''
-      subject
+    context 'invalid_input' do
+      it 'cannot update the comment' do
+        params[:comment][:body] = ''
+        subject
 
-      expect(response).to have_http_status(:unprocessable_entity)
-      expect(response).to render_template('edit')
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to render_template('edit')
+      end
+    end
+
+    context 'not the comment owner' do
+      it 'redirects to task_path' do
+        sign_in user2
+        subject
+
+        expect(response).to redirect_to task_path(assigns(:task))
+      end
     end
   end
 
@@ -86,6 +121,14 @@ RSpec.describe CommentsController, type: :controller do
     it { is_expected.to redirect_to task_path(assigns(:task)) }
     it 'deletes the comment' do
       expect { subject }.to change(Comment, :count).by(-1)
+    end
+
+    it 'deletes nothing and redirects to task_path' do
+      sign_in user2
+      subject
+
+      expect(response).to redirect_to task_path(assigns(:task))
+      expect(assigns(:comment)).to be_valid
     end
   end
 end
