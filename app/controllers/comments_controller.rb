@@ -12,9 +12,13 @@ class CommentsController < ApplicationController
     redirect_to task_path(@task)
   end
 
-  def edit; end
+  def edit
+    return redirect_to task_path(@task) unless @comment.user_id == current_user.id
+  end
 
   def update
+    return redirect_to task_path(@task) unless @comment.user_id == current_user.id
+
     if @comment.update(comment_params)
       redirect_to task_path(@task)
     else
@@ -23,7 +27,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @comment.destroy
+    @comment.destroy if @comment.user_id == current_user.id
 
     redirect_to task_path(@task), status: :see_other
   end
@@ -39,6 +43,6 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:commenter, :body)
+    params.require(:comment).permit(:body).merge(user: current_user)
   end
 end

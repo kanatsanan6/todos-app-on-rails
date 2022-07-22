@@ -2,6 +2,7 @@
 
 class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy]
+  skip_before_action :verify_authenticity_token
 
   def index
     @tasks = Task.all.sort_by(&:id)
@@ -10,11 +11,11 @@ class TasksController < ApplicationController
   def show; end
 
   def new
-    @task = Task.new
+    @task = current_user.tasks.new
   end
 
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.new(task_params)
 
     if @task.save
       redirect_to root_url
@@ -23,9 +24,13 @@ class TasksController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    return redirect_to root_url unless @task.user_id == current_user.id
+  end
 
   def update
+    return redirect_to root_url unless @task.user_id == current_user.id
+
     if @task.update(task_params)
       redirect_to task_path(@task)
     else
@@ -34,7 +39,7 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task.destroy
+    @task.destroy if @task.user_id == current_user.id
 
     redirect_to root_url, status: :see_other
   end
