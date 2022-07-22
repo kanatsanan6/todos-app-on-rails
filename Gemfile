@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-source 'https://www.rubygems.org'
+source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.6'

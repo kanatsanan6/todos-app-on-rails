@@ -7,7 +7,9 @@ RSpec.describe CommentsController, type: :controller do
   let!(:comment) { create(:comment, task: task) }
 
   describe 'POST #create' do
-    let(:params) { { task_id: task.id, comment: { commenter: 'Test commenter', body: 'Test body' } } }
+    let(:params) do
+      { task_id: task.id, comment: { commenter: 'Test commenter', body: 'Test body' } }
+    end
     subject { post :create, params: params }
 
     it { is_expected.to have_http_status(302) }
@@ -19,6 +21,7 @@ RSpec.describe CommentsController, type: :controller do
       expect(assigns(:task)).to eq task
       expect(assigns(:comment).commenter).to eq 'Test commenter'
       expect(assigns(:comment).body).to eq 'Test body'
+      expect(Comment.count).to eq 2
     end
 
     it 'cannot create a new comment' do
@@ -30,7 +33,7 @@ RSpec.describe CommentsController, type: :controller do
   end
 
   describe 'GET #edit' do
-    let!(:params) { { task_id: task.id, id: comment.id } }
+    let(:params) { { task_id: task.id, id: comment.id } }
     subject { get :edit, params: params }
 
     it { is_expected.to have_http_status(:ok) }
@@ -51,7 +54,7 @@ RSpec.describe CommentsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let!(:params) do
+    let(:params) do
       { task_id: task.id, id: comment.id, comment: { commenter: 'Updated commenter', body: 'Updated body' } }
     end
     subject { patch :update, params: params }
