@@ -1,0 +1,25 @@
+<div class='h-[100%] flex items-center justify-center'>
+  <div class='w-fit border border-black rounded-lg p-5'>
+    <h2 class='text-2xl mb-2'>Sign up</h2>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= render 'users/shared/error_messages', resource: resource %>
+      <div class='field'>
+        <%= f.label :email %><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: 'email' %>
+      </div>
+      <div class='field'>
+        <%= f.label :password %>
+        <br />
+        <%= f.password_field :password, autocomplete: 'new-password' %>
+      </div>
+      <div class='field'>
+        <%= f.label :password_confirmation %><br />
+        <%= f.password_field :password_confirmation, autocomplete: 'new-password' %>
+      </div>
+      <div class='actions w-[100%] border border-black rounded-md text-center p-1 mt-4 mb-2'>
+        <%= f.submit 'Sign up' %>
+      </div>
+    <% end %>
+    <%= render 'users/shared/links' %>
+  </div>
+</div>
