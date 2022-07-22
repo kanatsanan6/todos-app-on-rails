@@ -40,7 +40,7 @@ module TasksHelper
            else
              'Pending'
            end
-           
+
     out.html_safe
   end
 end
