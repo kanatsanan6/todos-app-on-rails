@@ -3,6 +3,8 @@
 require 'support/database_cleaner'
 require 'support/factory_bot'
 
+require 'rails_helper'
+
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
@@ -16,8 +18,6 @@ RSpec.configure do |config|
 
   config.filter_run_when_matching :focus
 
-  config.example_status_persistence_file_path = "spec/examples.txt"
-
   config.disable_monkey_patching!
 
   if config.files_to_run.one?
@@ -29,4 +29,12 @@ RSpec.configure do |config|
   config.order = :random
 
   Kernel.srand config.seed
+
+  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+
+  config.use_transactional_fixtures = true
+
+  config.infer_spec_type_from_file_location!
+
+  config.filter_rails_from_backtrace!
 end
