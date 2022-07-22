@@ -3,5 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'valid factory' do
+    subject { build(:user) }
+
+    it { is_expected.to be_valid }
+    it { is_expected.to have_many(:tasks) }
+    it { is_expected.to have_many(:comments) }
+  end
 end
