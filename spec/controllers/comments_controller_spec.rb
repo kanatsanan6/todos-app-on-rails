@@ -19,6 +19,7 @@ RSpec.describe CommentsController, type: :controller do
       expect(assigns(:task)).to eq task
       expect(assigns(:comment).commenter).to eq 'Test commenter'
       expect(assigns(:comment).body).to eq 'Test body'
+      expect(Comment.count).to eq 2
     end
 
     it 'cannot create a new comment' do

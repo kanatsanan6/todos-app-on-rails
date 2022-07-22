@@ -66,6 +66,7 @@ RSpec.describe TasksController, type: :controller do
       expect(assigns(:task).title).to eq 'Title-1'
       expect(assigns(:task).body).to eq 'This is a body'
       expect(assigns(:task).status).to eq 'pending'
+      expect(Task.count).to eq 3
     end
 
     it 'cannot create a new task' do
