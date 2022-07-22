@@ -4,10 +4,12 @@
     <%= title_status(task) %>
   </div>
   <div class="flex items-center">
+    <% if task.user_id == current_user.id %>
+      <p class='text-xs cursor-pointer hover:underline'><%= link_to 'EDIT', edit_task_path(task) %></p>
+      <p class='mx-1 text-xs'>|</p>
+      <p class='text-xs cursor-pointer hover:underline'><%= link_to 'DELETE', task_path(task), method: :delete, data: { confirm: "Are you sure?" } %></p>
+      <p class='mx-1 text-xs'>|</p>
+    <% end %>
     <p class='text-xs cursor-pointer hover:underline'><%= link_to 'See details', task_path(task) %></p>
-    <p class='mx-1 text-xs'>|</p>
-    <p class='text-xs cursor-pointer hover:underline'><%= link_to 'EDIT', edit_task_path(task) %></p>
-    <p class='mx-1 text-xs'>|</p>
-    <p class='text-xs cursor-pointer hover:underline'><%= link_to 'DELETE', task_path(task), method: :delete, data: { confirm: "Are you sure?" } %></p>
   </div>
 </div>
