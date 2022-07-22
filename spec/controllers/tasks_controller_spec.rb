@@ -54,7 +54,9 @@ RSpec.describe TasksController, type: :controller do
   end
 
   describe 'POST #create' do
-    let(:params) { { task: { title: 'Title-1', body: 'This is a body' } } }
+    let(:params) do
+      { task: { title: 'Title-1', body: 'This is a body' } }
+    end
     subject { post :create, params: params }
 
     it { is_expected.to have_http_status(302) }
@@ -99,7 +101,9 @@ RSpec.describe TasksController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let(:params) { { id: task2.id, task: { title: 'updated Title', body: 'This is updated body', status: 'in_progress' } } }
+    let(:params) do
+      { id: task2.id, task: { title: 'updated Title', body: 'This is updated body', status: 'in_progress' } }
+    end
     subject { post :update, params: params }
 
     it { is_expected.to have_http_status(302) }

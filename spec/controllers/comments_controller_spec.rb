@@ -7,7 +7,9 @@ RSpec.describe CommentsController, type: :controller do
   let!(:comment) { create(:comment, task: task) }
 
   describe 'POST #create' do
-    let(:params) { { task_id: task.id, comment: { commenter: 'Test commenter', body: 'Test body' } } }
+    let(:params) do
+      { task_id: task.id, comment: { commenter: 'Test commenter', body: 'Test body' } }
+    end 
     subject { post :create, params: params }
 
     it { is_expected.to have_http_status(302) }
