@@ -13,6 +13,9 @@
   </head>
 
   <body>
+    <% if user_signed_in? %>
+      <%= render 'layouts/header' %>
+    <% end %>
     <main class="container m-auto w-screen h-screen">
       <%= yield %>
     </main>
