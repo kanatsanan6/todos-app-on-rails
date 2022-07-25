@@ -8,4 +8,6 @@ class Task < ApplicationRecord
   validates :body, presence: true
 
   enum :status, { pending: 0, in_progress: 1, done: 2 }
+
+  paginates_per 6
 end

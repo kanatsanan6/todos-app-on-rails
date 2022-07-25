@@ -7,6 +7,8 @@ ruby '2.7.6'
 
 gem 'devise', '~> 4.8', '>= 4.8.1'
 
+gem 'kaminari', '~> 1.2', '>= 1.2.2'
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.3', '>= 7.0.3.1'
 

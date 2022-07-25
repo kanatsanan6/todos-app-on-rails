@@ -5,10 +5,12 @@ class TasksController < ApplicationController
   before_action :check_user, only: %i[edit update]
 
   def index
-    @tasks = Task.all.sort_by(&:id)
+    @tasks = Task.order(:created_at).page(params[:page])
   end
 
-  def show; end
+  def show
+    @task_comments = @task.comments.order(:created_at).page(params[:page])
+  end
 
   def new
     @task = current_user.tasks.new
