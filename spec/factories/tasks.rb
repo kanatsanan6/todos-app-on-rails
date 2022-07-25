@@ -5,5 +5,6 @@ FactoryBot.define do
     title { 'Test 1' }
     body { 'Test Body 1234' }
     status { :in_progress }
+    user
   end
 end

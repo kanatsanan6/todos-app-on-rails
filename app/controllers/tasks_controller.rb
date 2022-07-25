@@ -2,6 +2,7 @@
 
 class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy]
+  before_action :check_user, only: %i[edit update]
 
   def index
     @tasks = Task.all.sort_by(&:id)
@@ -10,11 +11,11 @@ class TasksController < ApplicationController
   def show; end
 
   def new
-    @task = Task.new
+    @task = current_user.tasks.new
   end
 
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.new(task_params)
 
     if @task.save
       redirect_to root_url
@@ -34,7 +35,7 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task.destroy
+    @task.destroy if @task.user_id == current_user.id
 
     redirect_to root_url, status: :see_other
   end
@@ -43,6 +44,10 @@ class TasksController < ApplicationController
 
   def set_task
     @task = Task.find(params[:id])
+  end
+
+  def check_user
+    return redirect_to root_url unless @task.user_id == current_user.id
   end
 
   def task_params

@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :comment do
-    commenter { 'Commenter 1' }
     body { 'Test comment 1234' }
+    user
     task
   end
 end

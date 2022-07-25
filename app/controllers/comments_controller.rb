@@ -3,7 +3,7 @@
 class CommentsController < ApplicationController
   before_action :set_task, only: %i[create update destroy edit]
   before_action :set_comment, only: %i[update destroy edit]
-  skip_before_action :verify_authenticity_token
+  before_action :check_user, only: %i[edit update]
 
   def create
     @comment = @task.comments.create!(comment_params)
@@ -23,7 +23,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @comment.destroy
+    @comment.destroy if @comment.user_id == current_user.id
 
     redirect_to task_path(@task), status: :see_other
   end
@@ -38,7 +38,11 @@ class CommentsController < ApplicationController
     @comment = @task.comments.find(params[:id])
   end
 
+  def check_user
+    return redirect_to task_path(@task) unless @comment.user_id == current_user.id
+  end
+
   def comment_params
-    params.require(:comment).permit(:commenter, :body)
+    params.require(:comment).permit(:body).merge(user: current_user)
   end
 end

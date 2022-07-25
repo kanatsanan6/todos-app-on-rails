@@ -1,0 +1,16 @@
+<div class='h-[100%] flex items-center justify-center'>
+  <div class='w-fit border border-black rounded-lg p-5'>
+    <h2 class='text-lg mb-2'>Forgot your password?</h2>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= render 'users/shared/error_messages', resource: resource %>
+      <div class='field'>
+        <%= f.label :email %><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: 'email' %>
+      </div>
+      <div class='actions border border-black rounded-md text-center p-1 mt-3 mb-2'>
+        <%= f.submit 'Reset password' %>
+      </div>
+    <% end %>
+    <%= render 'users/shared/links' %>
+  </div>
+</div>
