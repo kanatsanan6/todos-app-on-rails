@@ -2,6 +2,7 @@
 
 class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy]
+  before_action :check_user, only: %i[edit update]
 
   def index
     @tasks = Task.all.sort_by(&:id)
@@ -23,13 +24,9 @@ class TasksController < ApplicationController
     end
   end
 
-  def edit
-    return redirect_to root_url unless @task.user_id == current_user.id
-  end
+  def edit; end
 
   def update
-    return redirect_to root_url unless @task.user_id == current_user.id
-
     if @task.update(task_params)
       redirect_to task_path(@task)
     else
@@ -47,6 +44,10 @@ class TasksController < ApplicationController
 
   def set_task
     @task = Task.find(params[:id])
+  end
+
+  def check_user
+    return redirect_to root_url unless @task.user_id == current_user.id
   end
 
   def task_params

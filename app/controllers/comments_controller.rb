@@ -3,6 +3,7 @@
 class CommentsController < ApplicationController
   before_action :set_task, only: %i[create update destroy edit]
   before_action :set_comment, only: %i[update destroy edit]
+  before_action :check_user, only: %i[edit update]
 
   def create
     @comment = @task.comments.create!(comment_params)
@@ -11,13 +12,9 @@ class CommentsController < ApplicationController
     redirect_to task_path(@task)
   end
 
-  def edit
-    return redirect_to task_path(@task) unless @comment.user_id == current_user.id
-  end
+  def edit; end
 
   def update
-    return redirect_to task_path(@task) unless @comment.user_id == current_user.id
-
     if @comment.update(comment_params)
       redirect_to task_path(@task)
     else
@@ -39,6 +36,10 @@ class CommentsController < ApplicationController
 
   def set_comment
     @comment = @task.comments.find(params[:id])
+  end
+
+  def check_user
+    return redirect_to task_path(@task) unless @comment.user_id == current_user.id
   end
 
   def comment_params
