@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe TasksController, type: :controller do
   let!(:user1) { create(:user) }
   let!(:user2) { create(:user) }
-  let!(:task1) { create(:task, user: user1) }
+  let!(:task1) { create(:task, title: 'Title task1', user: user1) }
   let!(:task2) { create(:task, user: user2, status: :done) }
   let!(:task3) { create(:task, user: user1, status: :done) }
 
@@ -36,6 +36,14 @@ RSpec.describe TasksController, type: :controller do
         subject
 
         expect(assigns(:tasks)).to match_array [task3]
+      end
+
+      it 'return only task1' do
+        params[:search][:title] = 'task1'
+        params[:search][:status] = 1
+        subject
+
+        expect(assigns(:tasks)).to match_array [task1]
       end
     end
   end
