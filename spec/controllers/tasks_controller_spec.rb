@@ -5,20 +5,46 @@ require 'rails_helper'
 RSpec.describe TasksController, type: :controller do
   let!(:user1) { create(:user) }
   let!(:user2) { create(:user) }
-  let!(:task1) { create(:task, user: user1) }
+  let!(:task1) { create(:task, title: 'Title task1', user: user1) }
   let!(:task2) { create(:task, user: user2, status: :done) }
+  let!(:task3) { create(:task, user: user1, status: :done) }
+
   before { sign_in user1 }
 
   describe 'GET #index' do
-    subject { get :index }
+    context 'w/o search filter' do
+      subject { get :index }
 
-    it { is_expected.to have_http_status(:ok) }
-    it { is_expected.to render_template('index') }
+      it { is_expected.to have_http_status(:ok) }
+      it { is_expected.to render_template('index') }
 
-    it 'returns all tasks' do
-      subject
+      it 'returns all tasks' do
+        subject
 
-      expect(assigns(:tasks)).to match_array [task1, task2]
+        expect(assigns(:tasks)).to match_array [task1, task2, task3]
+      end
+    end
+
+    context 'w/ search filter' do
+      let(:params) { { search: { status: 2, user_id: user1.id } } }
+      subject { get :index, params: params }
+
+      it { is_expected.to have_http_status(:ok) }
+      it { is_expected.to render_template('index') }
+
+      it 'returns only task3' do
+        subject
+
+        expect(assigns(:tasks)).to match_array [task3]
+      end
+
+      it 'return only task1' do
+        params[:search][:title] = 'task1'
+        params[:search][:status] = 1
+        subject
+
+        expect(assigns(:tasks)).to match_array [task1]
+      end
     end
   end
 
@@ -77,7 +103,7 @@ RSpec.describe TasksController, type: :controller do
       expect(assigns(:task).title).to eq 'Title-1'
       expect(assigns(:task).body).to eq 'This is a body'
       expect(assigns(:task).status).to eq 'pending'
-      expect(Task.count).to eq 3
+      expect(Task.count).to eq 4
     end
 
     it 'cannot create a new task' do
