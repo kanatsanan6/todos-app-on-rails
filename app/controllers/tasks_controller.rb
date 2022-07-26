@@ -9,6 +9,7 @@ class TasksController < ApplicationController
       Task.all
       .then(&method(:filter_by_status))
       .then(&method(:filter_by_user_id))
+      .then(&method(:filter_by_title_body))
       .then(&method(:order))
       .then(&method(:paginate))
   end
@@ -49,6 +50,14 @@ class TasksController < ApplicationController
 
   private
 
+  def filter_by_title_body(tasks)
+    if params&.dig(:search, :title).present?
+      tasks.search_by_title_body(title_params)
+    else
+      tasks
+    end
+  end
+
   def filter_by_status(tasks)
     if params&.dig(:search, :status).present?
       tasks.where(status: status_params)
@@ -83,6 +92,10 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(:title, :body, :status)
+  end
+
+  def title_params
+    params.require(:search).permit(:title)[:title]
   end
 
   def status_params

@@ -13,4 +13,9 @@ class Task < ApplicationRecord
 
   include PgSearch::Model
   pg_search_scope :search_by_user_id, against: :user_id
+  pg_search_scope :search_by_title_body,
+                  against: %i[title body],
+                  using: {
+                    tsearch: { prefix: true }
+                  }
 end
