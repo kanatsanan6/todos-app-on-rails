@@ -1,13 +1,44 @@
 <div class='w-[100%] h-[100%] m-auto flex flex-col items-center'>
   <h1 class='text-center font-semibold text-2xl m-10'>TODOS LIST</h1>
-  <div class='w-[60%] flex flex-col items-center'>
-    <div class='flex justify-between items-center w-[100%] mb-3'>
-      <%= progress(@tasks) %>
-      <%= link_to "Add new Task", new_task_path, { class: 'text-sm border border-black p-2 rounded-lg hover:bg-gray-100' } %>
-    </div>
-    <% @tasks.each do |task| %>
-      <%= render 'todo', task: task %>
+  <div class='w-[60%] flex justify-around'>
+    <%= form_for :search, url: root_path, method: 'GET', class: 'text-sm mr-7' do |f| %>
+      <h4 class='text-xl mt-2 mb-4'>Filter</h4>
+      <div class='flex flex-col'>
+        <h4>Status:</h4>
+        <div>
+          <%= f.radio_button :status, 0, params&.dig(:search, :status) == '0' ? {:checked => true} : {:checked => false} %>
+          <%= f.label 'Pending' %>
+        </div>
+        <div>
+          <%= f.radio_button :status, 1, params&.dig(:search, :status) == '1' ? {:checked => true} : {:checked => false}  %>
+          <%= f.label 'In Progress' %>
+        </div>
+        <div>
+          <%= f.radio_button :status, 2, params&.dig(:search, :status) == '2' ? {:checked => true} : {:checked => false}  %>
+          <%= f.label 'Done' %>
+        </div>
+        <h4 class='mt-2'>Task:</h4>
+        <div>
+          <%= f.radio_button :user_id, current_user.id, params&.dig(:search, :user_id) == current_user.id.to_s ? {:checked => true} : {:checked => false} %>
+          <%= f.label 'My Task' %>
+        </div>
+      </div>
+      <div class='flex items-baseline mt-2'>
+        <%= f.submit 'Apply', class: 'text-sm mr-2 hover:underline cursor-pointer' %>
+        <%= link_to "Reset", root_path, class: 'text-blue-600 underline text-sm' %>
+      </div>
     <% end %>
+    <div class='flex-1'>
+      <div class='flex justify-between items-center w-[100%] mb-3'>
+        <%= progress(Task.all) %>
+        <%= link_to "Add new Task", new_task_path, { class: 'text-sm border border-black p-2 rounded-lg hover:bg-gray-100' } %>
+      </div>
+      <% @tasks.each do |task| %>
+        <%= render 'todo', task: task %>
+      <% end %>
+      <div class='w-[100%] text-center'>
+        <%= paginate @tasks %>
+      </div>
+    </div>
   </div>
-  <%= paginate @tasks %>
 </div>

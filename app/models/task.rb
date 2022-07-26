@@ -10,4 +10,8 @@ class Task < ApplicationRecord
   enum :status, { pending: 0, in_progress: 1, done: 2 }
 
   paginates_per 6
+
+  include PgSearch::Model
+  pg_search_scope :search_by_status, against: :status
+  pg_search_scope :search_by_user_id, against: :user_id
 end

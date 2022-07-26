@@ -5,7 +5,13 @@ class TasksController < ApplicationController
   before_action :check_user, only: %i[edit update]
 
   def index
-    @tasks = Task.order(:created_at).page(params[:page])
+    if params[:search]
+      @tasks_by_status = status_params.nil? ? Task.all : Task.search_by_status(status_params)
+      @tasks_by_status_and_user = user_id_params.nil? ? @tasks_by_status : @tasks_by_status.search_by_user_id(user_id_params)
+      @tasks = @tasks_by_status_and_user.order(:created_at).page(params[:page])
+    else
+      @tasks = Task.order(:created_at).page(params[:page])
+    end
   end
 
   def show
@@ -54,5 +60,13 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(:title, :body, :status)
+  end
+
+  def status_params
+    params.require(:search).permit(:status)[:status]
+  end
+
+  def user_id_params
+    params.require(:search).permit(:user_id)[:user_id]
   end
 end
