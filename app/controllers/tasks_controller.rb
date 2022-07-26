@@ -5,13 +5,12 @@ class TasksController < ApplicationController
   before_action :check_user, only: %i[edit update]
 
   def index
-    if params[:search]
-      @tasks_by_status = status_params.nil? ? Task.all : Task.search_by_status(status_params)
-      @tasks_by_status_and_user = user_id_params.nil? ? @tasks_by_status : @tasks_by_status.search_by_user_id(user_id_params)
-      @tasks = @tasks_by_status_and_user.order(:created_at).page(params[:page])
-    else
-      @tasks = Task.order(:created_at).page(params[:page])
-    end
+    @tasks =
+      Task.all
+      .then(&method(:filter_by_status))
+      .then(&method(:filter_by_user_id))
+      .then(&method(:order))
+      .then(&method(:paginate))
   end
 
   def show
@@ -49,6 +48,30 @@ class TasksController < ApplicationController
   end
 
   private
+
+  def filter_by_status(tasks)
+    if params&.dig(:search, :status).present?
+      tasks.where(status: status_params)
+    else
+      tasks
+    end
+  end
+
+  def filter_by_user_id(tasks)
+    if params&.dig(:search, :user_id).present?
+      tasks.search_by_user_id(user_id_params)
+    else
+      tasks
+    end
+  end
+
+  def order(tasks)
+    tasks.order(:created_at)
+  end
+
+  def paginate(tasks)
+    tasks.page(params[:page])
+  end
 
   def set_task
     @task = Task.find(params[:id])
