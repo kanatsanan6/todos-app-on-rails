@@ -1,4 +1,8 @@
 <div class='w-[100%] h-14 shadow-md px-20 flex items-center justify-between'>
-  <h4><%= 'Hello' %></h4>
+<div class='flex items-center'>
+  <%= link_to "Homepage", root_url %>
+  <p class='mx-2'>|</p>
+  <%= link_to "My Profile", current_user %>
+</div>
   <%= link_to 'Sign out', destroy_user_session_path, :method => :delete %>
 </div>

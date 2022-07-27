@@ -10,7 +10,7 @@
     <% end %>
   </div>
   <div class='flex items-baseline mb-2'>
-    <h5 class='text-semibold text-sm'><%= comment.user.email %></h5>
+    <h5 class='hover:underline text-semibold text-sm'><%= link_to comment.user.email, comment.user %></h5>
     <h5 class='ml-2 text-sm'><%= comment.body %></h5>
   </div>
   <hr />
