@@ -1,0 +1,8 @@
+<div class='flex justify-center p-10'>
+  <%= image_tag @user.avatar.url if @user.avatar.present? %>
+  <div>
+    <h1 class='text-xl'>Profile of <%= @user.email %></h1>
+    <h2>Created at: <%= @user.created_at %>% </h2>
+    <%= link_to 'Edit Profile', edit_user_path(@user), class: 'underline text-blue-600' %>
+  </div>
+</div>
