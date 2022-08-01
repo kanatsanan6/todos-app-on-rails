@@ -53,7 +53,13 @@ class TasksController < ApplicationController
   private
 
   def filter_by_scope(tasks)
-    tasks.where(scope: :scope_public).or(tasks.where(user_id: current_user.id))
+    if params&.dig(:search, :scope).present?
+      return tasks.where(scope: scope_params) if scope_params == :scope_public.to_s
+
+      tasks.where(scope: scope_params, user_id: current_user.id)
+    else
+      tasks.where(scope: :scope_public).or(tasks.where(user_id: current_user.id))
+    end
   end
 
   def filter_by_title_body(tasks)
@@ -113,5 +119,9 @@ class TasksController < ApplicationController
 
   def user_id_params
     params.require(:search).permit(:user_id)[:user_id]
+  end
+
+  def scope_params
+    params.require(:search).permit(:scope)[:scope]
   end
 end
