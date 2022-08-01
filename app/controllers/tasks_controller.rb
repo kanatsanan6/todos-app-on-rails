@@ -10,6 +10,7 @@ class TasksController < ApplicationController
           .then(&method(:filter_by_status))
           .then(&method(:filter_by_user_id))
           .then(&method(:filter_by_title_body))
+          .then(&method(:filter_by_scope))
           .then(&method(:order))
           .then(&method(:paginate))
   end
@@ -49,6 +50,10 @@ class TasksController < ApplicationController
   end
 
   private
+
+  def filter_by_scope(tasks)
+    tasks.where(scope: :scope_public).or(tasks.where(user_id: current_user.id))
+  end
 
   def filter_by_title_body(tasks)
     if params&.dig(:search, :title).present?
@@ -91,7 +96,7 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:title, :body, :status)
+    params.require(:task).permit(:title, :body, :status, :scope)
   end
 
   def title_params
