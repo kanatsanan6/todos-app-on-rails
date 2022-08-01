@@ -3,6 +3,7 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy]
   before_action :check_user, only: %i[edit update]
+  before_action :check_scope, only: %i[show]
 
   def index
     @tasks =
@@ -95,6 +96,9 @@ class TasksController < ApplicationController
     return redirect_to root_url unless @task.user_id == current_user.id
   end
 
+  def check_scope
+    return redirect_to root_url if @task.scope_private? && @task.user_id != current_user.id
+  end
   def task_params
     params.require(:task).permit(:title, :body, :status, :scope)
   end
