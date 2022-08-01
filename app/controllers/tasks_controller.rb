@@ -105,6 +105,7 @@ class TasksController < ApplicationController
   def check_scope
     return redirect_to root_url if @task.scope_private? && @task.user_id != current_user.id
   end
+
   def task_params
     params.require(:task).permit(:title, :body, :status, :scope)
   end
