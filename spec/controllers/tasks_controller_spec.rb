@@ -62,6 +62,13 @@ RSpec.describe TasksController, type: :controller do
       expect(assigns(:task)).to eq task1
     end
 
+    it 'redirect to root_url' do
+      params[:id] = task4.id
+      subject
+
+      expect(response).to redirect_to root_url
+    end
+
     it 'raises an error' do
       params[:id] = 'invalid_id'
 
