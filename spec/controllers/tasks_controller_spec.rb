@@ -8,6 +8,7 @@ RSpec.describe TasksController, type: :controller do
   let!(:task1) { create(:task, title: 'Title task1', user: user1) }
   let!(:task2) { create(:task, user: user2, status: :done) }
   let!(:task3) { create(:task, user: user1, status: :done) }
+  let!(:task4) { create(:task, user: user2, scope: :scope_private) }
 
   before { sign_in user1 }
 
@@ -103,7 +104,7 @@ RSpec.describe TasksController, type: :controller do
       expect(assigns(:task).title).to eq 'Title-1'
       expect(assigns(:task).body).to eq 'This is a body'
       expect(assigns(:task).status).to eq 'pending'
-      expect(Task.count).to eq 4
+      expect(Task.count).to eq 5
     end
 
     it 'cannot create a new task' do
