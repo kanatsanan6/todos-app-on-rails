@@ -2,4 +2,4 @@ developement:
   :concurrency: 1
 :queues:
   - default
-  - mailer
+  - schedule

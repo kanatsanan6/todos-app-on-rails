@@ -1,0 +1,4 @@
+every_moring:
+  cron: "0 8 * * *"
+  class: "Schedule::EveryMorningWorker"
+  queue: schedule
