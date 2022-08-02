@@ -36,7 +36,8 @@ RSpec.describe UsersController, type: :controller do
       {
         id: user1.id,
         user: {
-          avatar: Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/images/example_2.png'))
+          avatar: Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/images/example_2.png')),
+          username: 'Test username'
         }
       }
     end
@@ -47,6 +48,7 @@ RSpec.describe UsersController, type: :controller do
     it { is_expected.to redirect_to user_path(assigns(:user)) }
     it 'updates new avatar' do
       subject
+      expect(assigns(:user).username).to eq 'Test username'
       expect(assigns(:user).avatar.file.filename).to eq params[:user][:avatar].original_filename
     end
   end

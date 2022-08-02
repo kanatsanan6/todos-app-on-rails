@@ -8,6 +8,8 @@ RSpec.describe TasksController, type: :controller do
   let!(:task1) { create(:task, title: 'Title task1', user: user1) }
   let!(:task2) { create(:task, user: user2, status: :done) }
   let!(:task3) { create(:task, user: user1, status: :done) }
+  let!(:task4) { create(:task, user: user2, scope: :scope_private) }
+  let!(:task5) { create(:task, user: user1, status: :done, scope: :scope_private) }
 
   before { sign_in user1 }
 
@@ -21,7 +23,7 @@ RSpec.describe TasksController, type: :controller do
       it 'returns all tasks' do
         subject
 
-        expect(assigns(:tasks)).to match_array [task1, task2, task3]
+        expect(assigns(:tasks)).to match_array [task1, task2, task3, task5]
       end
     end
 
@@ -32,10 +34,10 @@ RSpec.describe TasksController, type: :controller do
       it { is_expected.to have_http_status(:ok) }
       it { is_expected.to render_template('index') }
 
-      it 'returns only task3' do
+      it 'returns task3 and task5' do
         subject
 
-        expect(assigns(:tasks)).to match_array [task3]
+        expect(assigns(:tasks)).to match_array [task3, task5]
       end
 
       it 'return only task1' do
@@ -44,6 +46,13 @@ RSpec.describe TasksController, type: :controller do
         subject
 
         expect(assigns(:tasks)).to match_array [task1]
+      end
+
+      it 'returns only task5' do
+        params[:search][:scope] = :scope_private
+        subject
+
+        expect(assigns(:tasks)).to match_array [task5]
       end
     end
   end
@@ -59,6 +68,13 @@ RSpec.describe TasksController, type: :controller do
       subject
 
       expect(assigns(:task)).to eq task1
+    end
+
+    it 'redirect to root_url' do
+      params[:id] = task4.id
+      subject
+
+      expect(response).to redirect_to root_url
     end
 
     it 'raises an error' do
@@ -103,7 +119,7 @@ RSpec.describe TasksController, type: :controller do
       expect(assigns(:task).title).to eq 'Title-1'
       expect(assigns(:task).body).to eq 'This is a body'
       expect(assigns(:task).status).to eq 'pending'
-      expect(Task.count).to eq 4
+      expect(Task.count).to eq 6
     end
 
     it 'cannot create a new task' do

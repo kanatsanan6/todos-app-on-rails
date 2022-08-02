@@ -3,6 +3,7 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy]
   before_action :check_user, only: %i[edit update]
+  before_action :check_scope, only: %i[show]
 
   def index
     @tasks =
@@ -10,6 +11,7 @@ class TasksController < ApplicationController
           .then(&method(:filter_by_status))
           .then(&method(:filter_by_user_id))
           .then(&method(:filter_by_title_body))
+          .then(&method(:filter_by_scope))
           .then(&method(:order))
           .then(&method(:paginate))
   end
@@ -49,6 +51,16 @@ class TasksController < ApplicationController
   end
 
   private
+
+  def filter_by_scope(tasks)
+    if params&.dig(:search, :scope).present?
+      return tasks.where(scope: scope_params) if scope_params == :scope_public.to_s
+
+      tasks.where(scope: scope_params, user_id: current_user.id)
+    else
+      tasks.where(scope: :scope_public).or(tasks.where(user_id: current_user.id))
+    end
+  end
 
   def filter_by_title_body(tasks)
     if params&.dig(:search, :title).present?
@@ -90,8 +102,12 @@ class TasksController < ApplicationController
     return redirect_to root_url unless @task.user_id == current_user.id
   end
 
+  def check_scope
+    return redirect_to root_url if @task.scope_private? && @task.user_id != current_user.id
+  end
+
   def task_params
-    params.require(:task).permit(:title, :body, :status)
+    params.require(:task).permit(:title, :body, :status, :scope)
   end
 
   def title_params
@@ -104,5 +120,9 @@ class TasksController < ApplicationController
 
   def user_id_params
     params.require(:search).permit(:user_id)[:user_id]
+  end
+
+  def scope_params
+    params.require(:search).permit(:scope)[:scope]
   end
 end

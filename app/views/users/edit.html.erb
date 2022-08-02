@@ -1,5 +1,7 @@
 <h1>Edit Profile of <%= @user.email %></h1>
 <%= form_for @user do |f| %>
+  <%= f.label 'username' %>
+  <%= f.text_field :username %>
   <%= f.file_field :avatar %>
   <%= f.submit %>
 <% end %>

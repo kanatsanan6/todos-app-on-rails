@@ -26,6 +26,14 @@
           <%= f.radio_button :user_id, current_user.id, params&.dig(:search, :user_id) == current_user.id.to_s ? {:checked => true} : {:checked => false} %>
           <%= f.label 'My Task' %>
         </div>
+        <div>
+          <%= f.radio_button :scope, :scope_public, params&.dig(:search, :scope) == :scope_public.to_s ? {:checked => true} : {:checked => false} %>
+          <%= f.label 'Public Task' %>
+        </div>
+        <div>
+          <%= f.radio_button :scope, :scope_private, params&.dig(:search, :scope) == :scope_private.to_s ? {:checked => true} : {:checked => false} %>
+          <%= f.label 'Private Task' %>
+        </div>
       </div>
       <div class='flex items-baseline mt-2'>
         <%= f.submit 'Apply', class: 'text-sm mr-2 hover:underline cursor-pointer' %>

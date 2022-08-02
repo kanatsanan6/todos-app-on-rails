@@ -16,5 +16,6 @@ RSpec.describe Task, type: :model do
     it { should define_enum_for(:status).with_values(pending: 0, in_progress: 1, done: 2) }
     it { is_expected.to have_many(:comments) }
     it { is_expected.to belong_to(:user) }
+    it { should define_enum_for(:scope).with_values(scope_public: 0, scope_private: 1) }
   end
 end
