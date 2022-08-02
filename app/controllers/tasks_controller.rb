@@ -7,11 +7,11 @@ class TasksController < ApplicationController
   def index
     @tasks =
       Task.all
-      .then(&method(:filter_by_status))
-      .then(&method(:filter_by_user_id))
-      .then(&method(:filter_by_title_body))
-      .then(&method(:order))
-      .then(&method(:paginate))
+          .then(&method(:filter_by_status))
+          .then(&method(:filter_by_user_id))
+          .then(&method(:filter_by_title_body))
+          .then(&method(:order))
+          .then(&method(:paginate))
   end
 
   def show

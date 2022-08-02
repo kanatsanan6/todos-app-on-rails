@@ -12,7 +12,7 @@
     </div>
     <h5 class='text-md mt-2'><%= "Description: #{@task.body}" %></h5>
     <h5 class='text-md mt-2'><%= task_status(@task) %></h5>
-    <h5 class='mt-2'><%= "created by #{@task.user.email}" %></h5>
+    <h5 class='mt-2 hover:underline'><%= link_to "created by #{@task.user.email}", @task.user %></h5>
     <h5 class='text-sm mt-2'><%= "last updated on #{@task.updated_at.strftime("%m-%b-%y at %I:%M%p")}" %></h5>
     <hr class='mt-4 mb-2 border-black'/>
     <h4 class='text-xl mb-2'>Comments</h4>
