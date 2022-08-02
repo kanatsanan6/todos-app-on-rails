@@ -9,4 +9,6 @@ Rails.application.routes.draw do
   resources :tasks do
     resources :comments, only: %i[create edit update destroy]
   end
+
+  mount Sidekiq::Web => '/sidekiq'
 end
