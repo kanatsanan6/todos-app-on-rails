@@ -8,7 +8,9 @@ module Schedule
 
     def perform
       User.find_each do |user|
-        TaskMailer.with(email: user.email).reminder_email.deliver_later
+        @tasks = Task.all.where(scope: :scope_public).or(Task.where(user_id: user.id))
+
+        TaskMailer.with(email: user.email, tasks: @tasks.to_json).reminder_email.deliver_later
       end
     end
   end
