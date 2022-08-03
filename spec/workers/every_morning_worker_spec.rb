@@ -21,10 +21,6 @@ RSpec.describe Schedule::EveryMorningWorker, type: :worker do
       ActiveJob::Base.queue_adapter = :test
       expect { described_class.new.perform }.to have_enqueued_mail(TaskMailer, :reminder_email)
     end
-
-    it 'goes into jobs array for testing environment' do
-      expect { described_class.perform_async }.to change(described_class.jobs, :size).by(1)
-    end
   end
 
   describe 'testing scheduled tasks' do
