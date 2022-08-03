@@ -19,8 +19,6 @@ module TodosAppOnRails
     # Load dotenv only in development or test environment
     Dotenv::Railtie.load if %w[development test].include? ENV['RAILS_ENV']
 
-    # sidekiq worker setup
-    config.active_job.queue_adapter = :sidekiq
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
