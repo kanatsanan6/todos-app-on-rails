@@ -6,12 +6,20 @@ require 'fugit'
 RSpec.describe Schedule::EveryMorningWorker, type: :worker do
   let(:time) { (Time.zone.tomorrow + 8.hours) }
   let(:scheduled_job) { described_class.perform_at(time) }
+  let!(:user) { create(:user) }
 
   describe 'testing worker' do
     it 'is enqueued in the schedul queue' do
-      described_class.perform_async
+      expect(described_class).to be_processed_in :schedule
+    end
 
-      assert_equal :schedule, described_class.queue
+    it 'is retryable' do
+      expect(described_class).to be_retryable 0
+    end
+
+    it 'matches with enqueued mailer' do
+      ActiveJob::Base.queue_adapter = :test
+      expect { described_class.new.perform }.to have_enqueued_mail(TaskMailer, :reminder_email)
     end
 
     it 'goes into jobs array for testing environment' do
