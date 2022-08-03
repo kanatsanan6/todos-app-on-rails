@@ -8,7 +8,7 @@ module Schedule
 
     def perform
       User.find_each do |user|
-        @tasks = (Task.where(scope: :scope_public) || Task.where(user_id: user.id)).where.not(status: :done)
+        @tasks = Task.scope_public.or(Task.where(user_id: user.id)).not_done
 
         TaskMailer.with(email: user.email, tasks: @tasks.as_json).reminder_email.deliver_later
       end
