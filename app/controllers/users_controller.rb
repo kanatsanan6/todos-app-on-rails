@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   private
 
   def check_authorization
-    return redirect_to @user unless current_user.id == @user.id
+    redirect_to @user and return unless current_user.id == @user.id
   end
 
   def set_user

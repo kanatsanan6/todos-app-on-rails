@@ -39,7 +39,7 @@ class CommentsController < ApplicationController
   end
 
   def check_user
-    return redirect_to task_path(@task) unless @comment.user_id == current_user.id
+    redirect_to task_path(@task) and return unless @comment.user_id == current_user.id
   end
 
   def comment_params

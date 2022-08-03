@@ -99,11 +99,11 @@ class TasksController < ApplicationController
   end
 
   def check_user
-    return redirect_to root_url unless @task.user_id == current_user.id
+    redirect_to root_url and return unless @task.user_id == current_user.id
   end
 
   def check_scope
-    return redirect_to root_url if @task.scope_private? && @task.user_id != current_user.id
+    redirect_to root_url and return if @task.scope_private? && @task.user_id != current_user.id
   end
 
   def task_params
