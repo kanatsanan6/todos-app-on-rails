@@ -3,3 +3,4 @@ developement:
 :queues:
   - default
   - schedule
+  - mailers
