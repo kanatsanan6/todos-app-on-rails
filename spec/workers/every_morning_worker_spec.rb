@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'fugit'
 
 RSpec.describe Schedule::EveryMorningWorker, type: :worker do
-  let(:time) { (Time.zone.today + 6.hours).to_datetime }
+  let(:time) { (Time.zone.tomorrow + 8.hours).to_datetime }
   let(:scheduled_job) { described_class.perform_at(time) }
 
   describe 'testing worker' do
