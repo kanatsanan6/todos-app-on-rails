@@ -5,7 +5,7 @@ class TaskMailer < ApplicationMailer
 
   def reminder_email
     @email = params[:email]
-    @tasks = JSON.parse(params[:tasks])
+    @tasks = params[:tasks]
 
     mail(to: @email, subject: 'A reminder from todos-on-rails!')
   end

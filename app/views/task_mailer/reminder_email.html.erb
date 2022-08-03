@@ -2,5 +2,5 @@
 
 <h2>You stil have <%= @tasks.present? ? @tasks.length : 0 %> tasks pending!</h2>
 <% @tasks.each do |task| %>
-  <li><%= task['title'] %></l1>
+  <li><%= "#{task[:title]} - #{task[:status]}" %></l1>
 <% end %>
