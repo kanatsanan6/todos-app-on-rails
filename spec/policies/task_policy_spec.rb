@@ -6,7 +6,7 @@ require 'pundit/rspec'
 RSpec.describe TaskPolicy, type: :policy do
   subject { described_class }
 
-  permissions :update?, :edit? do
+  permissions :update?, :edit?, :destroy? do
     let!(:user) { create(:user_role) }
     let!(:admin) { create(:admin_role) }
     let!(:task1) { create(:task, user: user) }
@@ -25,6 +25,7 @@ RSpec.describe TaskPolicy, type: :policy do
     context 'admin' do
       it 'permits' do
         expect(subject).to permit(admin, task1)
+        expect(subject).to permit(admin, task2)
       end
     end
   end
