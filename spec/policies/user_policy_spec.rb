@@ -1,27 +1,24 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
+require 'pundit/rspec'
 
 RSpec.describe UserPolicy, type: :policy do
-  let(:user) { User.new }
-
   subject { described_class }
 
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+  permissions :update?, :edit? do
+    context 'user' do
+      let!(:user) { create(:user_role) }
+      let!(:admin) { create(:admin_role) }
 
-  permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+      it 'denies' do
+        expect(subject).not_to permit(user, admin)
+      end
 
-  permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+      it 'permit' do
+        expect(subject).to permit(user, user)
+        expect(subject).to permit(admin, user)
+      end
+    end
   end
 end
