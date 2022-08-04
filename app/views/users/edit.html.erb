@@ -2,7 +2,7 @@
 <%= form_for @user do |f| %>
   <%= f.label 'username:' %>
   <%= f.text_field :username, class: 'h-5 my-2' %>
-  <% if @user.has_role? :admin %>
+  <% if current_user.has_role? :admin %>
   <br />
   <%= f.label 'role:' %>
   <%= f.collection_check_boxes :role_ids, Role.all, :id, :name %>
