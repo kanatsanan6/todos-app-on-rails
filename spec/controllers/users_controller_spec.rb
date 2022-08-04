@@ -32,12 +32,14 @@ RSpec.describe UsersController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    let!(:admin) { create(:admin_role) }
     let(:params) do
       {
         id: user1.id,
         user: {
           avatar: Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/images/example_2.png')),
-          username: 'Test username'
+          username: 'Test username',
+          role_ids: admin.roles.ids
         }
       }
     end
@@ -48,8 +50,10 @@ RSpec.describe UsersController, type: :controller do
     it { is_expected.to redirect_to user_path(assigns(:user)) }
     it 'updates new avatar' do
       subject
+
       expect(assigns(:user).username).to eq 'Test username'
       expect(assigns(:user).avatar.file.filename).to eq params[:user][:avatar].original_filename
+      expect(assigns(:user).roles_name).to match_array admin.roles_name
     end
   end
 end
