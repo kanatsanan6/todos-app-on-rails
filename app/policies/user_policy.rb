@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
 class UserPolicy
-  class Scope
-    def resolve
-      scope.all
-    end
-  end
+  attr_reader :user, :target_user
 
   def initialize(user, target_user)
     @user = user
