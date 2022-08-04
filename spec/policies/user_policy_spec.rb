@@ -23,6 +23,7 @@ RSpec.describe UserPolicy, type: :policy do
     context 'admin' do
       it 'permits' do
         expect(subject).to permit(admin, user)
+        expect(subject).to permit(admin, admin)
       end
     end
   end
