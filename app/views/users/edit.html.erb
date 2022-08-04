@@ -1,7 +1,15 @@
-<h1>Edit Profile of <%= @user.email %></h1>
+<h1 class='text-2xl'>Edit Profile of <%= @user.email %></h1>
 <%= form_for @user do |f| %>
-  <%= f.label 'username' %>
-  <%= f.text_field :username %>
-  <%= f.file_field :avatar %>
-  <%= f.submit %>
+  <%= f.label 'username:' %>
+  <%= f.text_field :username, class: 'h-5 my-2' %>
+  <% if @user.has_role? :admin %>
+  <br />
+  <%= f.label 'role:' %>
+  <%= f.collection_check_boxes :role_ids, Role.all, :id, :name %>
+  <% end %>
+  <br />
+  <%= f.file_field :avatar, class: 'my-2' %>
+  <div class='border border-black p-2 w-fit rounded-md horver:bg-gray-100 cursor-pointer'>
+    <%= f.submit %>
+  </div>
 <% end %>

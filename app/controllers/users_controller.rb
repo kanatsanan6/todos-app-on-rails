@@ -27,6 +27,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:avatar, :username)
+    params.require(:user).permit(:avatar, :username, { role_ids: [] })
   end
 end
