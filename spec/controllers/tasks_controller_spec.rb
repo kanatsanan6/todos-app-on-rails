@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe TasksController, type: :controller do
   let!(:user1) { create(:user) }
   let!(:user2) { create(:user) }
+  let!(:admin) { create(:admin_role) }
   let!(:task1) { create(:task, title: 'Title task1', user: user1) }
   let!(:task2) { create(:task, user: user2, status: :done) }
   let!(:task3) { create(:task, user: user1, status: :done) }
@@ -20,10 +21,21 @@ RSpec.describe TasksController, type: :controller do
       it { is_expected.to have_http_status(:ok) }
       it { is_expected.to render_template('index') }
 
-      it 'returns all tasks' do
+      it 'returns public and user1 tasks' do
         subject
 
         expect(assigns(:tasks)).to match_array [task1, task2, task3, task5]
+      end
+    end
+
+    context 'sign in as admin' do
+      before { sign_in admin }
+      subject { get :index }
+
+      it 'returns all task' do
+        subject
+
+        expect(assigns(:tasks)).to match_array [task1, task2, task3, task4, task5]
       end
     end
 

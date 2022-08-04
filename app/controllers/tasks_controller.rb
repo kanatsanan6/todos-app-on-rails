@@ -61,6 +61,8 @@ class TasksController < ApplicationController
       return tasks.where(scope: scope_params) if scope_params == :scope_public.to_s
 
       tasks.where(scope: scope_params, user_id: current_user.id)
+    elsif current_user.has_role? :admin
+      tasks
     else
       tasks.where(scope: :scope_public).or(tasks.where(user_id: current_user.id))
     end
