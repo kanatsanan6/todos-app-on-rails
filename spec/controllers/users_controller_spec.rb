@@ -27,7 +27,7 @@ RSpec.describe UsersController, type: :controller do
     context 'unauthorized' do
       before { sign_in user2 }
 
-      it { is_expected.to redirect_to root_url }
+      it { is_expected.to redirect_to user_path(assigns(:user)) }
     end
   end
 

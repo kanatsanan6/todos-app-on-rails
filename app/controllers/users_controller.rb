@@ -3,6 +3,8 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update]
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   def show; end
 
   def edit
@@ -26,5 +28,9 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:avatar, :username, role_ids: [])
+  end
+
+  def user_not_authorized
+    redirect_to @user
   end
 end
