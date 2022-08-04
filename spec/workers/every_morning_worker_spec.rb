@@ -18,7 +18,6 @@ RSpec.describe Schedule::EveryMorningWorker, type: :worker do
     end
 
     it 'matches with enqueued mailer' do
-      ActiveJob::Base.queue_adapter = :test
       expect { described_class.new.perform }.to have_enqueued_mail(TaskMailer, :reminder_email)
     end
   end
