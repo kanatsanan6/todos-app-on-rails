@@ -2,13 +2,15 @@
 
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update]
-  before_action :check_authorization, only: %i[edit update]
 
   def show; end
 
-  def edit; end
+  def edit
+    authorize @user
+  end
 
   def update
+    authorize @user
     if @user.update(user_params)
       redirect_to @user
     else
@@ -17,10 +19,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-  def check_authorization
-    redirect_to @user and return unless current_user.id == @user.id
-  end
 
   def set_user
     @user = User.find(params[:id])
