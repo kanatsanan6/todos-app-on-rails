@@ -24,6 +24,7 @@ gem 'pg_search', '~> 2.3', '>= 2.3.6'
 gem 'puma', '~> 5.0'
 gem 'rails', '~> 7.0.3', '>= 7.0.3.1'
 gem 'redis', '~> 4.1.0'
+gem 'rolify', '~> 6.0'
 gem 'sidekiq-cron', '~> 1.1.0'
 gem 'sprockets-rails'
 gem 'stimulus-rails'
@@ -34,7 +35,6 @@ group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails', '~> 2.1', '>= 2.1.1'
   gem 'rspec-rails', '~> 6.0.0.rc1'
-  gem 'rspec-sidekiq', '~> 3.1'
 end
 
 group :development do
@@ -48,6 +48,7 @@ group :test do
   gem 'factory_bot_rails', '~> 6.2'
   gem 'pry-byebug', '~> 3.9'
   gem 'rails-controller-testing', '~> 1.0', '>= 1.0.5'
+  gem 'rspec-sidekiq', '~> 3.1'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'webdrivers'
