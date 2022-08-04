@@ -3,7 +3,8 @@
 class CommentsController < ApplicationController
   before_action :set_task, only: %i[create update destroy edit]
   before_action :set_comment, only: %i[update destroy edit]
-  before_action :check_user, only: %i[edit update]
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def create
     @comment = @task.comments.create!(comment_params)
@@ -12,9 +13,12 @@ class CommentsController < ApplicationController
     redirect_to task_path(@task)
   end
 
-  def edit; end
+  def edit
+    authorize @comment
+  end
 
   def update
+    authorize @comment
     if @comment.update(comment_params)
       redirect_to task_path(@task)
     else
@@ -23,7 +27,8 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @comment.destroy if @comment.user_id == current_user.id
+    authorize @comment
+    @comment.destroy
 
     redirect_to task_path(@task), status: :see_other
   end
@@ -44,5 +49,9 @@ class CommentsController < ApplicationController
 
   def comment_params
     params.require(:comment).permit(:body).merge(user: current_user)
+  end
+
+  def user_not_authorized
+    redirect_to @task
   end
 end
