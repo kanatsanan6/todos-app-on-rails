@@ -7,16 +7,21 @@ RSpec.describe UserPolicy, type: :policy do
   subject { described_class }
 
   permissions :update?, :edit? do
-    context 'user' do
-      let!(:user) { create(:user_role) }
-      let!(:admin) { create(:admin_role) }
+    let!(:user) { create(:user_role) }
+    let!(:admin) { create(:admin_role) }
 
+    context 'user' do
       it 'denies' do
         expect(subject).not_to permit(user, admin)
       end
 
-      it 'permit' do
+      it 'permits' do
         expect(subject).to permit(user, user)
+      end
+    end
+
+    context 'admin' do
+      it 'permits' do
         expect(subject).to permit(admin, user)
       end
     end
