@@ -12,6 +12,10 @@ class TaskPolicy
     update?
   end
 
+  def destroy?
+    update?
+  end
+
   def update?
     (@user.has_role? :admin) || (@user.id == @target_task.user_id)
   end

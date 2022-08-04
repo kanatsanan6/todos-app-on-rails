@@ -49,8 +49,8 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task.destroy if @task.user_id == current_user.id
-
+    authorize @task
+    @task.destroy
     redirect_to root_url, status: :see_other
   end
 
