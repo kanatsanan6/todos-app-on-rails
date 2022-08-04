@@ -13,6 +13,6 @@ class TaskPolicy
   end
 
   def update?
-    (@user.has_role? :admin) || (@user.id == @target_user.user_id)
+    (@user.has_role? :admin) || (@user.id == @target_task.user_id)
   end
 end

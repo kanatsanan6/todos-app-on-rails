@@ -2,8 +2,9 @@
 
 class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy]
-  before_action :check_user, only: %i[edit update]
   before_action :check_scope, only: %i[show]
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     @tasks =
@@ -34,9 +35,12 @@ class TasksController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    authorize @task
+  end
 
   def update
+    authorize @task
     if @task.update(task_params)
       redirect_to task_path(@task)
     else
@@ -98,10 +102,6 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
   end
 
-  def check_user
-    redirect_to root_url and return unless @task.user_id == current_user.id
-  end
-
   def check_scope
     redirect_to root_url and return if @task.scope_private? && @task.user_id != current_user.id
   end
@@ -124,5 +124,9 @@ class TasksController < ApplicationController
 
   def scope_params
     params.require(:search).permit(:scope)[:scope]
+  end
+
+  def user_not_authorized
+    redirect_to root_url
   end
 end
