@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Company, type: :model do
   describe 'valid factory' do
-    subject { build(:company) } 
+    subject { build(:company) }
 
     it { is_expected.to be_valid }
   end
@@ -13,4 +13,3 @@ RSpec.describe Company, type: :model do
     it { is_expected.to validate_presence_of :name }
   end
 end
-

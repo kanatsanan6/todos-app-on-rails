@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe CompaniesController, type: :controller do
-  let!(:user) { create(:user) } 
+  let!(:user) { create(:user) }
   let!(:company1) { create(:company) }
   let!(:company2) { create(:company) }
 
@@ -16,7 +16,7 @@ RSpec.describe CompaniesController, type: :controller do
     it { is_expected.to render_template('index') }
 
     it 'returns all companies' do
-      subject 
+      subject
 
       expect(assigns(:companies)).to match_array [company1, company2]
     end
@@ -27,9 +27,9 @@ RSpec.describe CompaniesController, type: :controller do
 
     it { is_expected.to have_http_status(:ok) }
     it { is_expected.to render_template('new') }
-    
+
     it 'creates new instance' do
-      subject 
+      subject
 
       expect(assigns(:company).name).to eq ''
     end
@@ -39,7 +39,7 @@ RSpec.describe CompaniesController, type: :controller do
     let(:params) do
       {
         company: {
-          name: 'Name-1',
+          name: 'Name-1'
         }
       }
     end
@@ -91,7 +91,7 @@ RSpec.describe CompaniesController, type: :controller do
       {
         id: company1.id,
         company: {
-          name: 'updated Name',
+          name: 'updated Name'
         }
       }
     end
@@ -129,4 +129,3 @@ RSpec.describe CompaniesController, type: :controller do
     end
   end
 end
-

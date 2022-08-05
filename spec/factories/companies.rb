@@ -5,4 +5,3 @@ FactoryBot.define do
     name { 'Test 1' }
   end
 end
-
