@@ -1,0 +1,13 @@
+
+<%= form_with model: company do |form| %>
+  <div>
+    <%= form.label :name %><br>
+    <%= form.text_field :name %>
+    <% company.errors.full_messages_for(:name).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+  <div class='border border-black px-2 py-1 rounded-md mt-4 text-center'>
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   devise_for :users
   root 'tasks#index'
 
+  resources :companies
+
   resources :users
 
   resources :tasks do
