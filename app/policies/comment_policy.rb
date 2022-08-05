@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CommentPolicy
-  attr_reader :user
+  attr_reader :user, :target_comment
 
   def initialize(user, target_comment)
     @user = user

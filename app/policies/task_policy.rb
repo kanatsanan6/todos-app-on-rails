@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TaskPolicy
-  attr_reader :user
+  attr_reader :user, :target_task
 
   def initialize(user, target_task)
     @user = user
