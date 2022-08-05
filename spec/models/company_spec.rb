@@ -8,5 +8,9 @@ RSpec.describe Company, type: :model do
 
     it { is_expected.to be_valid }
   end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :title }
+  end
 end
 
