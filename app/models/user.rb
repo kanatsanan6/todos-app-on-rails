@@ -10,6 +10,7 @@ class User < ApplicationRecord
 
   has_many :tasks, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :companies
   has_many :membership
   has_many :companies, through: :membership
 

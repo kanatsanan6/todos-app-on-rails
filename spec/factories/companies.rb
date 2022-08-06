@@ -3,5 +3,6 @@
 FactoryBot.define do
   factory :company do
     name { 'Test 1' }
+    user
   end
 end
