@@ -10,6 +10,8 @@ class User < ApplicationRecord
 
   has_many :tasks, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :membership
+  has_many :companies, through: :membership
 
   enum :role, { user: 0, admin: 1, moderator: 2 }
 end
