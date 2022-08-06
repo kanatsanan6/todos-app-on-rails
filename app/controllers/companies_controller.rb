@@ -43,6 +43,6 @@ class CompaniesController < ApplicationController
   end
 
   def company_params
-    params.require(:company).permit(:name)
+    params.require(:company).permit(:name).merge(user: current_user)
   end
 end

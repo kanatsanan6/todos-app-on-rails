@@ -32,6 +32,7 @@ RSpec.describe CompaniesController, type: :controller do
       subject
 
       expect(assigns(:company).name).to eq ''
+      expect(assigns(:company).user).to eq nil
     end
   end
 
@@ -52,6 +53,7 @@ RSpec.describe CompaniesController, type: :controller do
       subject
 
       expect(assigns(:company).name).to eq 'Name-1'
+      expect(assigns(:company).user_id).to eq user.id
       expect(Company.count).to eq 3
     end
 
