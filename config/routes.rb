@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   devise_for :users
   root 'tasks#index'
 
-  resources :companies
+  resources :companies do
+    resources :memberships, only: %i[index new create destroy]
+  end
 
   resources :users
 
