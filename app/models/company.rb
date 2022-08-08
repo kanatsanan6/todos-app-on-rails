@@ -2,8 +2,8 @@
 
 class Company < ApplicationRecord
   belongs_to :user
-  has_many :membership
-  has_many :users, through: :membership
+  has_many :memberships
+  has_many :users, through: :memberships
 
   validates :name, presence: true
 end
