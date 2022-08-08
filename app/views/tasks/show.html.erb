@@ -1,13 +1,13 @@
 <div class='w-[100%] h-[100%] m-auto flex flex-col items-center'>
   <h3 class='text-center font-semibold text-2xl m-10'>TODOS LIST</h3>
   <div class='w-[60%] border border-black p-5 rounded-lg'>
-    <%= link_to '<- Back', root_url, { class: 'hover:underline' } %>
+    <%= link_to '<- Back', company_tasks_path(@company), { class: 'hover:underline' } %>
     <div class='flex items-center justify-between mt-2'>
       <h4 class='text-2xl'><%= "Title: #{@task.title}" %></h4>
       <div class='flex items-center justify-between'>
-        <p class='text-sm cursor-pointer hover:underline'><%= link_to 'EDIT', edit_task_path(@task) %></p>
+        <p class='text-sm cursor-pointer hover:underline'><%= link_to 'EDIT', edit_company_task_path(@company, @task) %></p>
         <p class='mx-1 text-xs'>|</p>
-        <p class='text-sm cursor-pointer hover:underline'><%= link_to 'DELETE', task_path(@task), method: :delete, data: { confirm: "Are you sure?" } %></p>
+        <p class='text-sm cursor-pointer hover:underline'><%= link_to 'DELETE', company_task_path(@company, @task), method: :delete, data: { confirm: "Are you sure?" } %></p>
       </div>
     </div>
     <h5 class='text-md mt-2'><%= "Description: #{@task.body}" %></h5>
@@ -23,7 +23,7 @@
       <%= paginate @task_comments %>
     </div>
     <h2>Add a comment:</h2>
-    <%= form_with model: [ @task, @task.comments.build ] do |form| %>
+    <%= form_with model: [@company, @task, @task.comments.build ] do |form| %>
       <p class='text-sm'>
         <%= form.text_area :body %>
       </p>
