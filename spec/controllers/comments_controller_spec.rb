@@ -5,13 +5,15 @@ require 'rails_helper'
 RSpec.describe CommentsController, type: :controller do
   let!(:user1) { create(:user) }
   let!(:user2) { create(:user) }
-  let!(:task) { create(:task, user: user1) }
+  let!(:company) { create(:company, user: user1) }
+  let!(:task) { create(:task, company: company, user: user1) }
   let!(:comment) { create(:comment, task: task, user: user1) }
   before { sign_in user1 }
 
   describe 'POST #create' do
     let(:params) do
       {
+        company_id: company.id,
         task_id: task.id,
         comment: {
           body: 'Test body'
@@ -21,7 +23,7 @@ RSpec.describe CommentsController, type: :controller do
     subject { post :create, params: params }
 
     it { is_expected.to have_http_status(302) }
-    it { is_expected.to redirect_to task_path(assigns(:task)) }
+    it { is_expected.to redirect_to company_task_path(assigns(:company), assigns(:task)) }
 
     it 'creates a new comment' do
       subject
@@ -36,12 +38,12 @@ RSpec.describe CommentsController, type: :controller do
       params[:comment][:body] = ''
       subject
 
-      expect(response).to redirect_to task_path(assigns(:task))
+      expect(response).to redirect_to company_task_path(assigns(:company), assigns(:task))
     end
   end
 
   describe 'GET #edit' do
-    let(:params) { { task_id: task.id, id: comment.id } }
+    let(:params) { { company_id: company.id, task_id: task.id, id: comment.id } }
     subject { get :edit, params: params }
 
     it { is_expected.to have_http_status(:ok) }
@@ -63,11 +65,11 @@ RSpec.describe CommentsController, type: :controller do
     end
 
     context 'not the comment owner' do
-      it 'redirects to task_path' do
+      it 'redirects to company_task_path' do
         sign_in user2
         subject
 
-        expect(response).to redirect_to task_path(assigns(:task))
+        expect(response).to redirect_to company_task_path(assigns(:company), assigns(:task))
       end
     end
   end
@@ -75,6 +77,7 @@ RSpec.describe CommentsController, type: :controller do
   describe 'PATCH #update' do
     let(:params) do
       {
+        company_id: company.id,
         task_id: task.id,
         id: comment.id,
         comment: {
@@ -85,7 +88,7 @@ RSpec.describe CommentsController, type: :controller do
     subject { patch :update, params: params }
 
     it { is_expected.to have_http_status(302) }
-    it { is_expected.to redirect_to task_path(assigns(:task)) }
+    it { is_expected.to redirect_to company_task_path(assigns(:company), assigns(:task)) }
 
     it 'updates the comment successfully' do
       subject
@@ -104,30 +107,30 @@ RSpec.describe CommentsController, type: :controller do
     end
 
     context 'not the comment owner' do
-      it 'redirects to task_path' do
+      it 'redirects to company_task_path' do
         sign_in user2
         subject
 
-        expect(response).to redirect_to task_path(assigns(:task))
+        expect(response).to redirect_to company_task_path(assigns(:company), assigns(:task))
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    let(:params) { { task_id: task.id, id: comment.id } }
+    let(:params) { { company_id: company.id,  task_id: task.id, id: comment.id } }
     subject { delete :destroy, params: params }
 
     it { is_expected.to have_http_status(:see_other) }
-    it { is_expected.to redirect_to task_path(assigns(:task)) }
+    it { is_expected.to redirect_to company_task_path(assigns(:company), assigns(:task)) }
     it 'deletes the comment' do
       expect { subject }.to change(Comment, :count).by(-1)
     end
 
-    it 'deletes nothing and redirects to task_path' do
+    it 'deletes nothing and redirects to company_task_path' do
       sign_in user2
       subject
 
-      expect(response).to redirect_to task_path(assigns(:task))
+      expect(response).to redirect_to company_task_path(assigns(:company), assigns(:task))
       expect(assigns(:comment)).to be_valid
     end
   end
