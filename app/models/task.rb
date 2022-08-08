@@ -2,6 +2,7 @@
 
 class Task < ApplicationRecord
   belongs_to :user
+  belongs_to :company
   has_many :comments, dependent: :destroy
 
   validates :title, presence: true, length: { minimum: 5 }

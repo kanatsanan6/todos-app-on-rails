@@ -6,6 +6,7 @@ FactoryBot.define do
     body { 'Test Body 1234' }
     status { :in_progress }
     user
+    company
     scope { :scope_public }
   end
 end
