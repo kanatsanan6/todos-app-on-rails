@@ -32,8 +32,7 @@ class CompaniesController < ApplicationController
   end
 
   def destroy
-    @company.destroy
-    redirect_to companies_path, status: :see_other
+    redirect_to companies_path, status: :see_other if @company.destroy
   end
 
   private

@@ -21,7 +21,7 @@ class MembershipsController < ApplicationController
   end
 
   def destroy
-    redirect_to company_memberships_path, status: :see_other and return if @membership.destroy
+    redirect_to company_memberships_path, status: :see_other if @membership.destroy
   end
 
   private
