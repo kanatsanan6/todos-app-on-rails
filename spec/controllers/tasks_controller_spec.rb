@@ -5,17 +5,19 @@ require 'rails_helper'
 RSpec.describe TasksController, type: :controller do
   let!(:user1) { create(:user) }
   let!(:user2) { create(:user) }
-  let!(:task1) { create(:task, title: 'Title task1', user: user1) }
-  let!(:task2) { create(:task, user: user2, status: :done) }
-  let!(:task3) { create(:task, user: user1, status: :done) }
-  let!(:task4) { create(:task, user: user2, scope: :scope_private) }
-  let!(:task5) { create(:task, user: user1, status: :done, scope: :scope_private) }
+  let!(:company) { create(:company, user: user1) }
+  let!(:task1) { create(:task, title: 'Title task1', company: company, user: user1) }
+  let!(:task2) { create(:task, company: company, user: user2, status: :done) }
+  let!(:task3) { create(:task, company: company, user: user1, status: :done) }
+  let!(:task4) { create(:task, company: company, user: user2, scope: :scope_private) }
+  let!(:task5) { create(:task, company: company, user: user1, status: :done, scope: :scope_private) }
 
   before { sign_in user1 }
 
   describe 'GET #index' do
     context 'w/o search filter' do
-      subject { get :index }
+      let(:params) { { company_id: company.id } }
+      subject { get :index, params: params }
 
       it { is_expected.to have_http_status(:ok) }
       it { is_expected.to render_template('index') }
@@ -28,7 +30,7 @@ RSpec.describe TasksController, type: :controller do
     end
 
     context 'w/ search filter' do
-      let(:params) { { search: { status: 2, user_id: user1.id } } }
+      let(:params) { { company_id: company.id, search: { status: 2, user_id: user1.id } } }
       subject { get :index, params: params }
 
       it { is_expected.to have_http_status(:ok) }
@@ -58,7 +60,7 @@ RSpec.describe TasksController, type: :controller do
   end
 
   describe 'GET #show' do
-    let(:params) { { id: task1.id } }
+    let(:params) { { company_id: company.id, id: task1.id } }
     subject { get :show, params: params }
 
     it { is_expected.to have_http_status(:ok) }
@@ -70,11 +72,11 @@ RSpec.describe TasksController, type: :controller do
       expect(assigns(:task)).to eq task1
     end
 
-    it 'redirect to root_url' do
+    it 'redirects to company_tasks' do
       params[:id] = task4.id
       subject
 
-      expect(response).to redirect_to root_url
+      expect(response).to redirect_to company_tasks_path(assigns(:company))
     end
 
     it 'raises an error' do
@@ -85,7 +87,8 @@ RSpec.describe TasksController, type: :controller do
   end
 
   describe 'GET #new' do
-    subject { get :new }
+    let(:params) { { company_id: company.id } }
+    subject { get :new, params: params }
 
     it { is_expected.to have_http_status(:ok) }
     it { is_expected.to render_template('new') }
@@ -102,6 +105,7 @@ RSpec.describe TasksController, type: :controller do
   describe 'POST #create' do
     let(:params) do
       {
+        company_id: company.id,
         task: {
           title: 'Title-1',
           body: 'This is a body'
@@ -111,7 +115,7 @@ RSpec.describe TasksController, type: :controller do
     subject { post :create, params: params }
 
     it { is_expected.to have_http_status(302) }
-    it { is_expected.to redirect_to root_url }
+    it { is_expected.to redirect_to company_tasks_path(assigns(:company)) }
 
     it 'creates a new task' do
       subject
@@ -132,7 +136,7 @@ RSpec.describe TasksController, type: :controller do
   end
 
   describe 'GET #edit' do
-    let(:params) { { id: task1.id } }
+    let(:params) { { company_id: company.id, id: task1.id } }
     subject { get :edit, params: params }
 
     it { is_expected.to have_http_status(:ok) }
@@ -153,11 +157,11 @@ RSpec.describe TasksController, type: :controller do
     end
 
     context 'not the task owner' do
-      it 'redirects to root url' do
+      it 'redirects to company_tasks' do
         sign_in user2
         subject
 
-        expect(response).to redirect_to root_url
+        expect(response).to redirect_to company_tasks_path(company)
       end
     end
   end
@@ -165,6 +169,7 @@ RSpec.describe TasksController, type: :controller do
   describe 'PATCH #update' do
     let(:params) do
       {
+        company_id: company.id,
         id: task1.id,
         task: {
           title: 'updated Title',
@@ -176,7 +181,7 @@ RSpec.describe TasksController, type: :controller do
     subject { post :update, params: params }
 
     it { is_expected.to have_http_status(302) }
-    it { is_expected.to redirect_to task_path(assigns(:task)) }
+    it { is_expected.to redirect_to company_task_path(company, assigns(:task)) }
 
     it 'updates the task' do
       subject
@@ -201,27 +206,27 @@ RSpec.describe TasksController, type: :controller do
         sign_in user2
         subject
 
-        expect(response).to redirect_to root_url
+        expect(response).to redirect_to company_tasks_path(assigns(:company))
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    let(:params) { { id: task1.id } }
+    let(:params) { { company_id: company.id, id: task1.id } }
     subject { delete :destroy, params: params }
 
     it { is_expected.to have_http_status(:see_other) }
-    it { is_expected.to redirect_to root_url }
+    it { is_expected.to redirect_to company_tasks_path(assigns(:company)) }
 
     it 'deletes the task' do
       expect { subject }.to change(Task, :count).by(-1)
     end
 
-    it 'deletes nothing and redirects to root_url' do
+    it 'deletes nothing and redirects to company_tasks' do
       sign_in user2
       subject
 
-      expect(response).to redirect_to root_url
+      expect(response).to redirect_to company_tasks_path(assigns(:company))
       expect(assigns(:task)).to be_valid
     end
   end

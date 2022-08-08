@@ -1,19 +1,20 @@
 # frozen_string_literal: true
 
 class TasksController < ApplicationController
+  before_action :set_company
   before_action :set_task, only: %i[show edit update destroy]
   before_action :check_user, only: %i[edit update]
   before_action :check_scope, only: %i[show]
 
   def index
     @tasks =
-      Task.all
-          .then(&method(:filter_by_status))
-          .then(&method(:filter_by_user_id))
-          .then(&method(:filter_by_title_body))
-          .then(&method(:filter_by_scope))
-          .then(&method(:order))
-          .then(&method(:paginate))
+      @company.tasks.all
+              .then(&method(:filter_by_status))
+              .then(&method(:filter_by_user_id))
+              .then(&method(:filter_by_title_body))
+              .then(&method(:filter_by_scope))
+              .then(&method(:order))
+              .then(&method(:paginate))
   end
 
   def show
@@ -21,14 +22,14 @@ class TasksController < ApplicationController
   end
 
   def new
-    @task = current_user.tasks.new
+    @task = @company.tasks.new
   end
 
   def create
-    @task = current_user.tasks.new(task_params)
+    @task = @company.tasks.new(task_params)
 
     if @task.save
-      redirect_to root_url
+      redirect_to company_tasks_path(@company)
     else
       render :new, status: :unprocessable_entity
     end
@@ -38,7 +39,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update(task_params)
-      redirect_to task_path(@task)
+      redirect_to company_task_path(@company, @task)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -47,7 +48,7 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy if @task.user_id == current_user.id
 
-    redirect_to root_url, status: :see_other
+    redirect_to company_tasks_path(@company), status: :see_other
   end
 
   private
@@ -94,20 +95,24 @@ class TasksController < ApplicationController
     tasks.page(params[:page])
   end
 
+  def set_company
+    @company = Company.find(params[:company_id])
+  end
+
   def set_task
-    @task = Task.find(params[:id])
+    @task = @company.tasks.find(params[:id])
   end
 
   def check_user
-    redirect_to root_url and return unless @task.user_id == current_user.id
+    redirect_to company_tasks_path(@company) and return unless @task.user_id == current_user.id
   end
 
   def check_scope
-    redirect_to root_url and return if @task.scope_private? && @task.user_id != current_user.id
+    redirect_to company_tasks_path(@company) and return if @task.scope_private? && @task.user_id != current_user.id
   end
 
   def task_params
-    params.require(:task).permit(:title, :body, :status, :scope)
+    params.require(:task).permit(:title, :body, :status, :scope).merge(user: current_user)
   end
 
   def title_params
