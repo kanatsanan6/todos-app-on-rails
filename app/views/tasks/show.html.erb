@@ -17,7 +17,7 @@
     <hr class='mt-4 mb-2 border-black'/>
     <h4 class='text-xl mb-2'>Comments</h4>
     <% @task_comments.each do |comment| %>
-      <%= render 'comment',  task: @task , comment: comment %>
+      <%= render 'comment', company: @company, task: @task , comment: comment %>
     <% end %>
     <div class='w-[100%] flex justify-end'>
       <%= paginate @task_comments %>
