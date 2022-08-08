@@ -3,7 +3,7 @@
     <p><%= membership.user.email %></p>
   </div>
   <div class="flex items-center">
-    <p class='text-xs cursor-pointer hover:underline'><%= link_to 'See details', user_path(membership.user) %></p>
+    <p class='text-xs cursor-pointer hover:underline'><%= link_to 'See Profile', user_path(membership.user) %></p>
     <% if current_user.id == membership.company.user.id %>
       <p class='mx-1 text-xs'>|</p>
       <p class='text-xs cursor-pointer hover:underline'><%= link_to 'DELETE', company_membership_path(membership.company, membership), method: :delete, data: { confirm: "Are you sure?" } %></p>
