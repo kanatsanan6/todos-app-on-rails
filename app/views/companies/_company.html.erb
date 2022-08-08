@@ -2,10 +2,11 @@
   <%= company.name %>
   <div class="flex items-center">
     <p class='text-xs cursor-pointer hover:underline'><%= link_to 'See details', company_memberships_path(company) %></p>
-    <p class='mx-1 text-xs'>|</p>
-    <p class='text-xs cursor-pointer hover:underline'><%= link_to 'EDIT', edit_company_path(company) %></p>
-    <p class='mx-1 text-xs'>|</p>
-    <p class='text-xs cursor-pointer hover:underline'><%= link_to 'DELETE', company_path(company), method: :delete, data: { confirm: "Are you sure?" } %></p>
+    <% if current_user.id == company.user.id %>
+      <p class='mx-1 text-xs'>|</p>
+      <p class='text-xs cursor-pointer hover:underline'><%= link_to 'EDIT', edit_company_path(company) %></p>
+      <p class='mx-1 text-xs'>|</p>
+      <p class='text-xs cursor-pointer hover:underline'><%= link_to 'DELETE', company_path(company), method: :delete, data: { confirm: "Are you sure?" } %></p>
+    <% end %>
   </div>
 </div>
-
