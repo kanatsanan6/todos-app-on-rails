@@ -1,0 +1,6 @@
+<h1>This is reminder email from todos-on-rails! for <%= @email %></h1>
+
+<h2>You stil have <%= @tasks.present? ? @tasks.length : 0 %> tasks pending!</h2>
+<% @tasks.each do |task| %>
+  <li><%= "#{task[:title]} - #{task[:status]}" %></l1>
+<% end %>

@@ -1,0 +1,6 @@
+developement:
+  :concurrency: 1
+:queues:
+  - default
+  - schedule
+  - mailers
