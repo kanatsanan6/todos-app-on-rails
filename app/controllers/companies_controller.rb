@@ -2,7 +2,9 @@
 
 class CompaniesController < ApplicationController
   before_action :set_company, only: %i[edit update destroy]
-  before_action :check_user, only: %i[edit update destroy]
+  before_action :check_authorize, only: %i[edit update destroy]
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     @companies = Company.all
@@ -46,7 +48,11 @@ class CompaniesController < ApplicationController
     params.require(:company).permit(:name).merge(user: current_user)
   end
 
-  def check_user
-    redirect_to companies_path and return unless @company.user_id == current_user.id 
+  def check_authorize
+    authorize @company
+  end
+
+  def user_not_authorized
+    redirect_to companies_path
   end
 end
