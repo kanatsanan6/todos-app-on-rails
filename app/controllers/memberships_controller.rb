@@ -3,6 +3,7 @@
 class MembershipsController < ApplicationController
   before_action :set_company, only: %i[index new create destroy]
   before_action :set_membership, only: %i[destroy]
+  before_action :check_user, only: %i[new create destroy]
 
   def index
     @memberships = @company.memberships
@@ -41,5 +42,9 @@ class MembershipsController < ApplicationController
 
   def order(membership)
     membership.order(:created_at)
+  end
+
+  def check_user
+    redirect_to company_memberships_path(@company) and return unless @company.user_id == current_user.id
   end
 end

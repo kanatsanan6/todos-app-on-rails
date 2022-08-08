@@ -2,6 +2,7 @@
 
 class CompaniesController < ApplicationController
   before_action :set_company, only: %i[edit update destroy]
+  before_action :check_user, only: %i[edit update destroy]
 
   def index
     @companies = Company.all
@@ -43,5 +44,9 @@ class CompaniesController < ApplicationController
 
   def company_params
     params.require(:company).permit(:name).merge(user: current_user)
+  end
+
+  def check_user
+    redirect_to companies_path and return unless @company.user_id == current_user.id 
   end
 end

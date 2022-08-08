@@ -4,8 +4,9 @@ require 'rails_helper'
 
 RSpec.describe CompaniesController, type: :controller do
   let!(:user) { create(:user) }
-  let!(:company1) { create(:company) }
-  let!(:company2) { create(:company) }
+  let!(:user2) { create(:user) }
+  let!(:company1) { create(:company, user: user) }
+  let!(:company2) { create(:company, user: user2) }
 
   before { sign_in user }
 
@@ -86,6 +87,15 @@ RSpec.describe CompaniesController, type: :controller do
         expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    context 'not the company owner' do
+      it 'redirects to comapany index url' do
+        sign_in user2
+        subject
+
+        expect(response).to redirect_to companies_path
+      end
+    end
   end
 
   describe 'PATCH #update' do
@@ -115,6 +125,15 @@ RSpec.describe CompaniesController, type: :controller do
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response).to render_template('edit')
+      end
+    end
+
+    context 'not the company owner' do
+      it 'redirects to comapany index url' do
+        sign_in user2
+        subject
+
+        expect(response).to redirect_to companies_path
       end
     end
   end

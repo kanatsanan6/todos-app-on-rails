@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe MembershipsController, type: :controller do
   let!(:user) { create(:user) }
-  let!(:company) { create(:company) }
+  let!(:user2) { create(:user) }
+  let!(:company) { create(:company, user: user) }
   let!(:membership) { create(:membership, user: user, company: company) }
 
   before { sign_in user }
@@ -34,6 +35,15 @@ RSpec.describe MembershipsController, type: :controller do
 
       expect(assigns(:membership)).to be_instance_of Membership
     end
+
+    context 'not the company owner' do
+      it 'redirects to membership index url' do
+        sign_in user2
+        subject
+
+        expect(response).to redirect_to company_memberships_path(company)
+      end
+    end
   end
 
   describe 'POST #create' do
@@ -60,6 +70,15 @@ RSpec.describe MembershipsController, type: :controller do
       expect(assigns(:membership).company_id).to eq company.id
       expect(assigns(:membership).user_id).to eq user.id
     end
+
+    context 'not the company owner' do
+      it 'redirects to membership index url' do
+        sign_in user2
+        subject
+
+        expect(response).to redirect_to company_memberships_path(company)
+      end
+    end
   end
 
   describe 'DELETE #destroy' do
@@ -71,6 +90,15 @@ RSpec.describe MembershipsController, type: :controller do
 
     it 'deletes the member' do
       expect { subject }.to change(Membership, :count).by(-1)
+    end
+
+    context 'not the company owner' do
+      it 'redirects to membership index url' do
+        sign_in user2
+        subject
+
+        expect(response).to redirect_to company_memberships_path(company)
+      end
     end
   end
 end
