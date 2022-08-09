@@ -14,18 +14,18 @@ RSpec.describe CompanyPolicy, type: :policy do
 
     context 'user' do
       it 'denies' do
-        expect(subject).not_to permit(user, company_admin)
+        expect(subject).not_to permit(user, { company: company_admin })
       end
 
       it 'permits' do
-        expect(subject).to permit(user, company_user)
+        expect(subject).to permit(user, { company: company_user })
       end
     end
 
     context 'admin' do
       it 'permits' do
-        expect(subject).to permit(admin, company_admin)
-        expect(subject).to permit(admin, company_user)
+        expect(subject).to permit(admin, { company: company_admin })
+        expect(subject).to permit(admin, { company: company_user })
       end
     end
   end

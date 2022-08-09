@@ -1,13 +1,6 @@
 # frozen_string_literal: true
 
-class CompanyPolicy
-  attr_reader :user
-
-  def initialize(user, company)
-    @user = user
-    @company = company
-  end
-
+class CompanyPolicy < ApplicationPolicy
   def edit?
     update?
   end
@@ -17,12 +10,12 @@ class CompanyPolicy
   end
 
   def update?
-    @user.admin? || owner?
+    user.admin? || owner?
   end
 
   private
 
   def owner?
-    @user.id == @company.user_id
+    @user.id == @record[:company].user_id
   end
 end

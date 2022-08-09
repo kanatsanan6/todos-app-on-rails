@@ -49,7 +49,7 @@ class CompaniesController < ApplicationController
   end
 
   def check_authorize
-    authorize @company
+    authorize({ company: @company }, policy_class: CompanyPolicy)
   end
 
   def user_not_authorized
