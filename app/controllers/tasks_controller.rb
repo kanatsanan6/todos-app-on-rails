@@ -3,8 +3,11 @@
 class TasksController < ApplicationController
   before_action :set_company
   before_action :set_task, only: %i[show edit update destroy]
-  before_action :check_user, only: %i[edit update]
+  before_action :check_owner, only: %i[edit update destroy]
+  before_action :check_member, only: %i[index show new create]
   before_action :check_scope, only: %i[show]
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     @tasks =
@@ -103,8 +106,12 @@ class TasksController < ApplicationController
     @task = @company.tasks.find(params[:id])
   end
 
-  def check_user
-    redirect_to company_tasks_path(@company) and return unless @task.user_id == current_user.id
+  def check_owner
+    authorize({ task: @task }, policy_class: TaskPolicy)
+  end
+
+  def check_member
+    authorize({ company: @company }, policy_class: TaskPolicy)
   end
 
   def check_scope
@@ -129,5 +136,9 @@ class TasksController < ApplicationController
 
   def scope_params
     params.require(:search).permit(:scope)[:scope]
+  end
+
+  def user_not_authorized
+    redirect_to companies_path
   end
 end
