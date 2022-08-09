@@ -6,6 +6,8 @@ RSpec.describe CommentsController, type: :controller do
   let!(:user1) { create(:user) }
   let!(:user2) { create(:user) }
   let!(:company) { create(:company, user: user1) }
+  let!(:membership_1) { create(:membership, company: company, user: user1) }
+  let!(:membership_2) { create(:membership, company: company, user: user2) }
   let!(:task) { create(:task, company: company, user: user1) }
   let!(:comment) { create(:comment, task: task, user: user1) }
   before { sign_in user1 }

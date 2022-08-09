@@ -4,7 +4,10 @@ class CommentsController < ApplicationController
   before_action :company
   before_action :task, only: %i[create update destroy edit]
   before_action :comment, only: %i[update destroy edit]
-  before_action :check_user, only: %i[edit update]
+  before_action :check_owner, only: %i[edit update]
+  before_action :check_member, only: %i[create]
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def create
     @comment = @task.comments.create!(comment_params)
@@ -43,11 +46,19 @@ class CommentsController < ApplicationController
     @comment ||= @task.comments.find(params[:id])
   end
 
-  def check_user
-    redirect_to company_task_path(@company, @task) and return unless @comment.user_id == current_user.id
+  def check_owner
+    authorize({ comment: @comment }, policy_class: CommentPolicy)
+  end
+
+  def check_member
+    authorize({ company: @company }, policy_class: CommentPolicy)
   end
 
   def comment_params
     params.require(:comment).permit(:body).merge(user: current_user)
+  end
+
+  def user_not_authorized
+    redirect_to company_task_path(@company, @task)
   end
 end
