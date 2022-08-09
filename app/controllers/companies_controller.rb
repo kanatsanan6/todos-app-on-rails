@@ -47,6 +47,6 @@ class CompaniesController < ApplicationController
   end
 
   def check_user
-    redirect_to companies_path and return unless @company.user_id == current_user.id
+    redirect_to companies_path unless @company.user_id == current_user.id
   end
 end
