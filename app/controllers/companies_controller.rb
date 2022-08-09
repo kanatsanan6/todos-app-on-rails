@@ -44,7 +44,7 @@ class CompaniesController < ApplicationController
 
 
   def create_membership_for_owner
-    Membership.create(user_id: current_user.id, company_id: @company.id)
+    Membership.create!(user_id: current_user.id, company_id: @company.id)
   end
 
   def company
