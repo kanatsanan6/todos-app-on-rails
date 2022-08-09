@@ -7,6 +7,8 @@ RSpec.describe CompaniesController, type: :controller do
   let!(:user2) { create(:user) }
   let!(:company1) { create(:company, user: user) }
   let!(:company2) { create(:company, user: user2) }
+  let!(:membership_1) { create(:membership, company: company1, user: user) }
+  let!(:membership_2) { create(:membership, company: company2, user: user2) }
 
   before { sign_in user }
 
@@ -16,10 +18,10 @@ RSpec.describe CompaniesController, type: :controller do
     it { is_expected.to have_http_status(:ok) }
     it { is_expected.to render_template('index') }
 
-    it 'returns all companies' do
+    it 'returns your own companies' do
       subject
 
-      expect(assigns(:companies)).to match_array [company1, company2]
+      expect(assigns(:companies)).to match_array [company1]
     end
   end
 
