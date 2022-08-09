@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class CommentsController < ApplicationController
-  before_action :set_company
-  before_action :set_task, only: %i[create update destroy edit]
-  before_action :set_comment, only: %i[update destroy edit]
+  before_action :company
+  before_action :task, only: %i[create update destroy edit]
+  before_action :comment, only: %i[update destroy edit]
   before_action :check_user, only: %i[edit update]
 
   def create
@@ -31,16 +31,16 @@ class CommentsController < ApplicationController
 
   private
 
-  def set_company
-    @company = Company.find(params[:company_id])
+  def company
+    @company ||= Company.find(params[:company_id])
   end
 
-  def set_task
-    @task = @company.tasks.find(params[:task_id])
+  def task
+    @task ||= @company.tasks.find(params[:task_id])
   end
 
-  def set_comment
-    @comment = @task.comments.find(params[:id])
+  def comment
+    @comment ||= @task.comments.find(params[:id])
   end
 
   def check_user

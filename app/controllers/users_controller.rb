@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[show edit update]
+  before_action :user, only: %i[show edit update]
   before_action :check_authorization, only: %i[edit update]
 
   def show; end
@@ -22,8 +22,8 @@ class UsersController < ApplicationController
     redirect_to @user and return unless current_user.id == @user.id
   end
 
-  def set_user
-    @user = User.find(params[:id])
+  def user
+    @user ||= User.find(params[:id])
   end
 
   def user_params

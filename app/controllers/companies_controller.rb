@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CompaniesController < ApplicationController
-  before_action :set_company, only: %i[edit update destroy]
+  before_action :company, only: %i[edit update destroy]
   before_action :check_user, only: %i[edit update destroy]
 
   def index
@@ -38,8 +38,8 @@ class CompaniesController < ApplicationController
 
   private
 
-  def set_company
-    @company = Company.find(params[:id])
+  def company
+    @company ||= Company.find(params[:id])
   end
 
   def company_params

@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 class TasksController < ApplicationController
-  before_action :set_company
-  before_action :set_task, only: %i[show edit update destroy]
+  before_action :company
+  before_action :task, only: %i[show edit update destroy]
   before_action :check_user, only: %i[edit update]
   before_action :check_scope, only: %i[show]
 
   def index
     @tasks =
-      @company.tasks.all
+      @company.tasks
               .then(&method(:filter_by_status))
               .then(&method(:filter_by_user_id))
               .then(&method(:filter_by_title_body))
@@ -95,12 +95,12 @@ class TasksController < ApplicationController
     tasks.page(params[:page])
   end
 
-  def set_company
-    @company = Company.find(params[:company_id])
+  def company
+    @company ||= Company.find(params[:company_id])
   end
 
-  def set_task
-    @task = @company.tasks.find(params[:id])
+  def task
+    @task ||= @company.tasks.find(params[:id])
   end
 
   def check_user
