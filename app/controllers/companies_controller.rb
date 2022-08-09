@@ -3,11 +3,12 @@
 class CompaniesController < ApplicationController
   before_action :set_company, only: %i[edit update destroy]
   before_action :check_authorize, only: %i[edit update destroy]
+  after_action :create_membership_for_owner, only: %i[create]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    @companies = Company.all
+    @companies = policy_scope(Company)
   end
 
   def new
@@ -39,6 +40,10 @@ class CompaniesController < ApplicationController
   end
 
   private
+
+  def create_membership_for_owner
+    Membership.create(user_id: current_user.id, company_id: @company.id)
+  end
 
   def set_company
     @company = Company.find(params[:id])
