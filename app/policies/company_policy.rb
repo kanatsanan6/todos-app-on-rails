@@ -26,10 +26,14 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def update?
-    user.admin? || owner?
+    admin? || owner?
   end
 
   private
+
+  def admin?
+    user.admin?
+  end
 
   def owner?
     @user.id == @record[:company].user_id

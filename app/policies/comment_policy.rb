@@ -14,7 +14,7 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def update?
-    user.admin? || owner?
+    admin? || owner?
   end
 
   private
