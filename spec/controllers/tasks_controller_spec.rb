@@ -6,6 +6,8 @@ RSpec.describe TasksController, type: :controller do
   let!(:user1) { create(:user) }
   let!(:user2) { create(:user) }
   let!(:company) { create(:company, user: user1) }
+  let!(:membership_1) { create(:membership, company: company, user: user1) }
+  let!(:membership_2) { create(:membership, company: company, user: user2) }
   let!(:task1) { create(:task, title: 'Title task1', company: company, user: user1) }
   let!(:task2) { create(:task, company: company, user: user2, status: :done) }
   let!(:task3) { create(:task, company: company, user: user1, status: :done) }
@@ -161,7 +163,7 @@ RSpec.describe TasksController, type: :controller do
         sign_in user2
         subject
 
-        expect(response).to redirect_to company_tasks_path(company)
+        expect(response).to redirect_to company_tasks_path(assigns(:company))
       end
     end
   end
@@ -181,7 +183,7 @@ RSpec.describe TasksController, type: :controller do
     subject { post :update, params: params }
 
     it { is_expected.to have_http_status(302) }
-    it { is_expected.to redirect_to company_task_path(company, assigns(:task)) }
+    it { is_expected.to redirect_to company_task_path(assigns(:company), assigns(:task)) }
 
     it 'updates the task' do
       subject

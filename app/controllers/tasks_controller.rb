@@ -139,6 +139,6 @@ class TasksController < ApplicationController
   end
 
   def user_not_authorized
-    redirect_to companies_path
+    redirect_to company_tasks_path(@company)
   end
 end
