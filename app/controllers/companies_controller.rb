@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class CompaniesController < ApplicationController
-
   before_action :company, only: %i[edit update destroy]
   before_action :check_authorize, only: %i[edit update destroy]
   after_action :create_membership_for_owner, only: %i[create]
@@ -42,7 +41,6 @@ class CompaniesController < ApplicationController
 
   private
 
-
   def create_membership_for_owner
     Membership.create!(user_id: current_user.id, company_id: @company.id)
   end
@@ -54,7 +52,6 @@ class CompaniesController < ApplicationController
   def company_params
     params.require(:company).permit(:name).merge(user: current_user)
   end
-
 
   def check_authorize
     authorize({ company: @company }, policy_class: CompanyPolicy)
