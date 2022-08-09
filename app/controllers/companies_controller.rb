@@ -53,6 +53,7 @@ class CompaniesController < ApplicationController
     params.require(:company).permit(:name).merge(user: current_user)
   end
 
+
   def check_authorize
     authorize({ company: @company }, policy_class: CompanyPolicy)
   end
