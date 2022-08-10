@@ -22,6 +22,7 @@ class TasksController < ApplicationController
 
   def show
     @task_comments = @task.comments.order(:created_at).page(params[:page])
+    @task_comments = @task.comments.order(created_at: :asc).page(params[:page])
   end
 
   def new
