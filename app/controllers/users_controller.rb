@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   private
 
   def check_authorization
-    redirect_to @user and return unless current_user.id == @user.id
+    authorize({ user: @user }, policy_class: UserPolicy)
   end
 
   def user
@@ -27,6 +27,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:avatar, :username)
+    params.require(:user).permit(:avatar, :username, :role)
   end
 end
