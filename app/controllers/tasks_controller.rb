@@ -21,7 +21,6 @@ class TasksController < ApplicationController
   end
 
   def show
-    @task_comments = @task.comments.order(:created_at).page(params[:page])
     @task_comments = @task.comments.order(created_at: :asc).page(params[:page])
   end
 
@@ -92,7 +91,6 @@ class TasksController < ApplicationController
   end
 
   def order(tasks)
-    tasks.order(:created_at)
     tasks.order(created_at: :asc)
   end
 
