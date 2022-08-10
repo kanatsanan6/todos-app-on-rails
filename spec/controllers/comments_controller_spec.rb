@@ -41,6 +41,7 @@ RSpec.describe CommentsController, type: :controller do
       subject
 
       expect(response).to redirect_to company_task_path(assigns(:company), assigns(:task))
+      expect(response).to have_http_status(:see_other)
     end
   end
 

@@ -19,6 +19,13 @@ class MembershipsController < ApplicationController
     redirect_to company_memberships_path
   rescue ActiveRecord::StatementInvalid
     render :new, status: :unprocessable_entity
+    @membership = @company.memberships.new(membership_params)
+
+    if @membership.save
+      redirect_to company_memberships_path
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def destroy

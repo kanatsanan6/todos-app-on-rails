@@ -10,10 +10,13 @@ class CommentsController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def create
-    @comment = @task.comments.create!(comment_params)
-    redirect_to company_task_path(@company, @task)
-  rescue ActiveRecord::RecordInvalid
-    redirect_to company_task_path(@company, @task)
+    @comment = @task.comments.new(comment_params)
+
+    if @comment.save
+      redirect_to company_task_path(@company, @task)
+    else
+      redirect_to company_task_path(@company, @task), status: :see_other
+    end
   end
 
   def edit; end
