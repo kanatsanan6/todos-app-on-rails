@@ -92,6 +92,7 @@ class TasksController < ApplicationController
 
   def order(tasks)
     tasks.order(:created_at)
+    tasks.order(created_at: :asc)
   end
 
   def paginate(tasks)

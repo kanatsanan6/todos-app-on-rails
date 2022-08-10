@@ -42,6 +42,7 @@ class MembershipsController < ApplicationController
 
   def order(membership)
     membership.order(:created_at)
+    membership.order(created_at: :asc)
   end
 
   def check_user
