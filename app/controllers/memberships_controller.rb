@@ -45,6 +45,7 @@ class MembershipsController < ApplicationController
   def membership_params
     @email = params[:membership][:email]
     params.permit(:membership).merge({ user: User.find_by(email: @email) })
+    params.permit(:membership).merge(user: User.find_by(email: @email))
   end
 
   def order(membership)
