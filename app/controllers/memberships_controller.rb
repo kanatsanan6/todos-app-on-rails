@@ -15,10 +15,6 @@ class MembershipsController < ApplicationController
   end
 
   def create
-    @membership = @company.memberships.create!(membership_params)
-    redirect_to company_memberships_path
-  rescue ActiveRecord::StatementInvalid
-    render :new, status: :unprocessable_entity
     @membership = @company.memberships.new(membership_params)
 
     if @membership.save
@@ -44,12 +40,10 @@ class MembershipsController < ApplicationController
 
   def membership_params
     @email = params[:membership][:email]
-    params.permit(:membership).merge({ user: User.find_by(email: @email) })
     params.permit(:membership).merge(user: User.find_by(email: @email))
   end
 
   def order(membership)
-    membership.order(:created_at)
     membership.order(created_at: :asc)
   end
 
