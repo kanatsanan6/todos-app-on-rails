@@ -3,7 +3,7 @@
   <div class='ml-5'>
     <h1 class='text-xl'>Profile of <%= @user.username.present? ? @user.username : @user.email %></h1>
     <h2>Joined at: <%= @user.created_at.strftime("%m-%b-%y at %I:%M%p") %></h2>
-    <% if current_user.id == @user.id %>
+    <% if current_user.id == @user.id || current_user.admin? %>
       <%= link_to 'Edit Profile', edit_user_path(@user), class: 'underline text-blue-600' %>
     <% end %>
   </div>
